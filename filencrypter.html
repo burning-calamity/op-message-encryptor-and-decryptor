@@ -60,6 +60,8 @@
       <div data-param="beaufort_key"><label>Beaufort key</label><input id="beaufort_key" type="text" value="SecretKey9"></div>
       <div data-param="autokey_key"><label>Autokey seed</label><input id="autokey_key" type="text" value="SecretKey9"></div>
       <div data-param="columnar_key"><label>Columnar key</label><input id="columnar_key" type="text" value="SecretKey9"></div>
+      <div data-param="porta_key"><label>Porta key</label><input id="porta_key" type="text" value="SecretKey9"></div>
+      <div data-param="alberti_key"><label>Alberti disk key</label><input id="alberti_key" type="text" value="SecretKey9"></div>
       <div data-param="stream_key"><label>XOR/RC4 stream key</label><input id="stream_key" type="text" value="SecretKey9"></div>
       <div data-param="shift"><label>Shift</label><input id="shift" type="number" value="7"></div>
       <div data-param="affine_a"><label>Affine a</label><input id="affine_a" type="number" value="2"></div>
@@ -83,9 +85,11 @@
 <script id="cipher-runtime">
 const ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789+/=";
 const DEFAULT_CIPHER_ORDER = ["Caesar", "Vigenere", "Atbash"];
-const EXTRA_CIPHERS = ["ROT47", "Affine", "Keyed Caesar", "Beaufort", "Progressive Caesar", "Autokey", "Gronsfeld", "Rail Fence", "Columnar Transposition", "Reverse", "Binary", "Hex", "Octal", "Decimal ASCII", "XOR Stream", "RC4 Stream"];
-const EXPANDING_CIPHERS = new Set(["Binary", "Hex", "Octal", "Decimal ASCII", "XOR Stream", "RC4 Stream"]);
+const EXTRA_CIPHERS = ["ROT47", "Affine", "Keyed Caesar", "Beaufort", "Progressive Caesar", "Autokey", "Gronsfeld", "Rail Fence", "Columnar Transposition", "Bifid", "Trifid", "Porta", "Trithemius", "Alberti", "Reverse", "Binary", "Baconian", "Hex", "Polybius Square", "Morse Code", "XOR Stream", "RC4 Stream", "ADFGVX", "Octal", "Decimal ASCII"];
+const EXPANDING_CIPHERS = new Set(["Binary", "Baconian", "Hex", "Polybius Square", "Morse Code", "XOR Stream", "RC4 Stream", "ADFGVX", "Octal", "Decimal ASCII"]);
 const ALPHABET_INDEX = Object.fromEntries([...ALPHABET].map((c, i) => [c, i]));
+const GRID_CACHE = new Map();
+const CUSTOM_INDEX_CACHE = new Map([[ALPHABET, ALPHABET_INDEX]]);
 
 function shiftLetter(ch, shift) {
   const code = ch.charCodeAt(0);
@@ -98,15 +102,19 @@ function asciiShifts(key) {
   if (!shifts.length) throw new Error("Key must contain at least one ASCII letter.");
   return shifts;
 }
+function alphabetIndex(alphabet = ALPHABET) {
+  if (!CUSTOM_INDEX_CACHE.has(alphabet)) CUSTOM_INDEX_CACHE.set(alphabet, Object.fromEntries([...alphabet].map((c, i) => [c, i])));
+  return CUSTOM_INDEX_CACHE.get(alphabet);
+}
 function keyIndexes(key, alphabet = ALPHABET) {
-  const index = Object.fromEntries([...alphabet].map((c, i) => [c, i]));
+  const index = alphabetIndex(alphabet);
   const values = [...key].filter(c => c in index).map(c => index[c]);
   if (!values.length) throw new Error("Key must contain a supported character.");
   return values;
 }
 function normalizedAlphabet(seed, alphabet = ALPHABET) {
-  let out = "";
-  for (const ch of seed + alphabet) if (alphabet.includes(ch) && !out.includes(ch)) out += ch;
+  let out = ""; const seen = new Set(); const allowed = new Set(alphabet);
+  for (const ch of seed + alphabet) if (allowed.has(ch) && !seen.has(ch)) { out += ch; seen.add(ch); }
   if (out.length !== alphabet.length) throw new Error("Keyword alphabet failed to normalize.");
   return out;
 }
@@ -171,13 +179,42 @@ function railFence(text, rails, offset = 0, decrypt = false) {
 function columnar(text, key, decrypt = false) {
   const values = keyIndexes(key); const width = values.length;
   const order = [...Array(width).keys()].sort((a, b) => values[a] - values[b] || a - b);
-  if (!decrypt) return order.map(i => [...text].filter((_, j) => j % width === i).join("")).join("");
+  if (!decrypt) { const cols = Array.from({length: width}, () => []); [...text].forEach((ch, i) => cols[i % width].push(ch)); return order.map(i => cols[i].join("")).join(""); }
   const base = Math.floor(text.length / width), extra = text.length % width, lengths = [...Array(width).keys()].map(i => base + (i < extra ? 1 : 0));
   const cols = Array(width).fill(""); let cursor = 0; for (const i of order) { cols[i] = text.slice(cursor, cursor + lengths[i]); cursor += lengths[i]; }
   let out = ""; for (let r = 0; r < Math.max(...lengths); r++) for (let c = 0; c < width; c++) if (r < cols[c].length) out += cols[c][r]; return out;
 }
+function gridAlphabet(size) {
+  if (GRID_CACHE.has(size)) return GRID_CACHE.get(size);
+  const padding = "!#$%&()*,-.:;<>?@[]^_`{|}~¡¢£¤¥¦§¨©ª«¬®¯";
+  const chars = [...ALPHABET, ...[...padding].filter(c => !ALPHABET.includes(c))];
+  const seen = new Set(chars); let cp = 0x0100;
+  while (chars.length < size) { const ch = String.fromCodePoint(cp++); if (!seen.has(ch)) { chars.push(ch); seen.add(ch); } }
+  const grid = chars.slice(0, size).join(""); const index = Object.fromEntries([...grid].map((c, i) => [c, i]));
+  const cached = {grid, index}; GRID_CACHE.set(size, cached); return cached;
+}
+function replaceGridChars(text, transformed, index) { let pos = 0; return [...text].map(ch => ch in index ? transformed[pos++] : ch).join(""); }
+function bifid(text, decrypt = false) {
+  const width = 9, {grid, index} = gridAlphabet(width * width), supported = [...text].filter(ch => ch in index); if (!supported.length) return text;
+  if (!decrypt) { const rows = supported.map(ch => Math.floor(index[ch] / width)), cols = supported.map(ch => index[ch] % width), merged = [...rows, ...cols]; return replaceGridChars(text, merged.filter((_, i) => i % 2 === 0).map((v, i) => grid[v * width + merged[i * 2 + 1]]).join(""), index); }
+  const coords = supported.flatMap(ch => [Math.floor(index[ch] / width), index[ch] % width]), mid = coords.length / 2;
+  return replaceGridChars(text, Array.from({length: mid}, (_, i) => grid[coords[i] * width + coords[mid + i]]).join(""), index);
+}
+function trifid(text, decrypt = false) {
+  const width = 5, {grid, index} = gridAlphabet(width ** 3), supported = [...text].filter(ch => ch in index); if (!supported.length) return text;
+  if (!decrypt) { const layers = [], rows = [], cols = []; for (const ch of supported) { const value = index[ch]; layers.push(Math.floor(value / 25)); rows.push(Math.floor(value / 5) % 5); cols.push(value % 5); } const merged = [...layers, ...rows, ...cols]; return replaceGridChars(text, merged.filter((_, i) => i % 3 === 0).map((v, i) => grid[v * 25 + merged[i * 3 + 1] * 5 + merged[i * 3 + 2]]).join(""), index); }
+  const coords = supported.flatMap(ch => [Math.floor(index[ch] / 25), Math.floor(index[ch] / 5) % 5, index[ch] % 5]), third = coords.length / 3;
+  return replaceGridChars(text, Array.from({length: third}, (_, i) => grid[coords[i] * 25 + coords[third + i] * 5 + coords[third * 2 + i]]).join(""), index);
+}
+function porta(text, key) { const shifts = [...key].filter(c => /[A-Za-z]/.test(c)).map(c => Math.floor((c.toUpperCase().charCodeAt(0) - 65) / 2)); if (!shifts.length) throw new Error("Porta key needs letters."); let pos = 0; return [...text].map(ch => { if (!/[A-Za-z]/.test(ch)) return ch; const base = ch >= 'A' && ch <= 'Z' ? 65 : 97, value = ch.charCodeAt(0) - base, shift = shifts[pos++ % shifts.length]; const mapped = value < 13 ? 13 + ((value + shift) % 13) : (value - 13 - shift + 13) % 13; return String.fromCharCode(base + mapped); }).join(""); }
+function trithemius(text, decrypt = false) { let pos = 0; return [...text].map(ch => /[A-Za-z]/.test(ch) ? shiftLetter(ch, (decrypt ? -1 : 1) * pos++) : ch).join(""); }
+function alberti(text, key, decrypt = false) { const inner = normalizedAlphabet(key, "ABCDEFGHIJKLMNOPQRSTUVWXYZ"), outer = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"; let pos = 0; return [...text].map(ch => { if (!/[A-Za-z]/.test(ch)) return ch; const rotated = inner.slice(pos % 26) + inner.slice(0, pos % 26); const source = decrypt ? rotated : outer, target = decrypt ? outer : rotated, upper = ch.toUpperCase(), mapped = target[source.indexOf(upper)]; pos++; return ch === upper ? mapped : mapped.toLowerCase(); }).join(""); }
 function chunkEncode(text, radix, width) { return [...text].map(c => c.codePointAt(0).toString(radix).padStart(width, "0")).join(" "); }
 function chunkDecode(text, radix) { return text.split(/\s+/).filter(Boolean).map(c => String.fromCodePoint(parseInt(c, radix))).join(""); }
+function baconian(text, decrypt = false) { return decrypt ? text.split(/\s+/).filter(Boolean).map(c => String.fromCodePoint(parseInt(c.replaceAll('a','0').replaceAll('b','1'), 2))).join("") : [...text].map(c => c.codePointAt(0).toString(2).padStart(8, '0').replaceAll('0','a').replaceAll('1','b')).join(' '); }
+function polybius(text, decrypt = false) { return decrypt ? text.split(/\s+/).filter(Boolean).map(c => String.fromCodePoint(Number(c.slice(0, 2)) * 16 + Number(c.slice(2)))).join("") : [...text].map(c => `${Math.floor(c.codePointAt(0) / 16)}`.padStart(2, '0') + `${c.codePointAt(0) % 16}`.padStart(2, '0')).join(' '); }
+function morseCode(text, decrypt = false) { return decrypt ? text.split(' / ').filter(Boolean).map(c => String.fromCodePoint(parseInt(c.replaceAll('.', '0').replaceAll('-', '1'), 2))).join('') : [...text].map(c => c.codePointAt(0).toString(2).padStart(8, '0').replaceAll('0', '.').replaceAll('1', '-')).join(' / '); }
+function adfgvx(text, decrypt = false) { const symbols = 'ADFGVX', width = 8; if (!decrypt) return [...text].map(ch => { let value = ch.codePointAt(0), digits = []; for (let i = 0; i < width; i++) { digits.push(symbols[value % 6]); value = Math.floor(value / 6); } return digits.reverse().join(''); }).join(' '); return text.split(/\s+/).filter(Boolean).map(chunk => { if (chunk.length !== width || [...chunk].some(c => !symbols.includes(c))) throw new Error('ADFGVX chunks must be 8 symbols.'); let value = 0; for (const c of chunk) value = value * 6 + symbols.indexOf(c); return String.fromCodePoint(value); }).join(''); }
 function xorStream(text, key, decrypt = false) { const ks = [...key].map(c => c.charCodeAt(0)); if (!ks.length) throw new Error("XOR key required."); return decrypt ? text.split(/\s+/).filter(Boolean).map((h, i) => String.fromCharCode(parseInt(h, 16) ^ ks[i % ks.length])).join("") : [...text].map((c, i) => (c.charCodeAt(0) ^ ks[i % ks.length]).toString(16).padStart(2, "0")).join(" "); }
 function rc4Stream(text, key, decrypt = false) { const kb = [...key].map(c => c.charCodeAt(0)); if (!kb.length) throw new Error("RC4 key required."); const s = [...Array(256).keys()]; let j = 0; for (let i = 0; i < 256; i++) { j = (j + s[i] + kb[i % kb.length]) % 256; [s[i], s[j]] = [s[j], s[i]]; } let i = 0; j = 0; const next = () => { i = (i + 1) % 256; j = (j + s[i]) % 256; [s[i], s[j]] = [s[j], s[i]]; return s[(s[i] + s[j]) % 256]; }; return decrypt ? text.split(/\s+/).filter(Boolean).map(h => String.fromCharCode(parseInt(h, 16) ^ next())).join("") : [...text].map(c => (c.charCodeAt(0) ^ next()).toString(16).padStart(2, "0")).join(" "); }
 function applyCipher(text, cipher, p, decrypt = false) {
@@ -194,9 +231,18 @@ function applyCipher(text, cipher, p, decrypt = false) {
     case "Gronsfeld": return gronsfeld(text, p.gronsfeld_digits, decrypt);
     case "Rail Fence": return railFence(text, Number(p.rails), Number(p.rail_offset || 0), decrypt);
     case "Columnar Transposition": return columnar(text, p.columnar_key || p.key, decrypt);
+    case "Bifid": return bifid(text, decrypt);
+    case "Trifid": return trifid(text, decrypt);
+    case "Porta": return porta(text, p.porta_key || p.key);
+    case "Trithemius": return trithemius(text, decrypt);
+    case "Alberti": return alberti(text, p.alberti_key || p.key, decrypt);
     case "Reverse": return [...text].reverse().join("");
     case "Binary": return decrypt ? chunkDecode(text, 2) : chunkEncode(text, 2, 8);
+    case "Baconian": return baconian(text, decrypt);
     case "Hex": return decrypt ? chunkDecode(text, 16) : chunkEncode(text, 16, 2);
+    case "Polybius Square": return polybius(text, decrypt);
+    case "Morse Code": return morseCode(text, decrypt);
+    case "ADFGVX": return adfgvx(text, decrypt);
     case "Octal": return decrypt ? chunkDecode(text, 8) : chunkEncode(text, 8, 3);
     case "Decimal ASCII": return decrypt ? chunkDecode(text, 10) : chunkEncode(text, 10, 3);
     case "XOR Stream": return xorStream(text, p.stream_key || p.key, decrypt);
@@ -212,13 +258,23 @@ function requiredParams(ciphers) {
     if (["Caesar", "Keyed Caesar", "Progressive Caesar"].includes(c)) names.add("shift");
     if (c === "Vigenere") names.add("vigenere_key"); if (c === "Keyed Caesar") names.add("keyed_caesar_key");
     if (c === "Beaufort") names.add("beaufort_key"); if (c === "Autokey") names.add("autokey_key");
-    if (c === "Columnar Transposition") names.add("columnar_key"); if (["XOR Stream", "RC4 Stream"].includes(c)) names.add("stream_key");
+    if (c === "Columnar Transposition") names.add("columnar_key"); if (c === "Porta") names.add("porta_key"); if (c === "Alberti") names.add("alberti_key"); if (["XOR Stream", "RC4 Stream"].includes(c)) names.add("stream_key");
     if (c === "Affine") { names.add("affine_a"); names.add("affine_b"); } if (c === "Progressive Caesar") names.add("step");
     if (c === "Gronsfeld") names.add("gronsfeld_digits"); if (c === "Rail Fence") { names.add("rails"); names.add("rail_offset"); }
   }
   return [...names];
 }
-function validateSelection(ciphers, params) { const expanders = ciphers.filter(c => EXPANDING_CIPHERS.has(c)); if (expanders.length > 1) throw new Error(`Select at most one expanding cipher: ${expanders.join(", ")}`); for (const name of requiredParams(ciphers)) if (!String(params[name] ?? "").trim()) throw new Error(`${name} is required.`); }
+function gcd(a, b) { a = Math.abs(a); b = Math.abs(b); while (b) [a, b] = [b, a % b]; return a; }
+function validateSelection(ciphers, params) {
+  const expanders = ciphers.filter(c => EXPANDING_CIPHERS.has(c));
+  if (expanders.length > 1) throw new Error(`Select at most one expanding cipher: ${expanders.join(", ")}`);
+  for (const name of requiredParams(ciphers)) if (!String(params[name] ?? "").trim()) throw new Error(`${name} is required.`);
+  if (ciphers.includes("Affine")) {
+    const a = Number(params.affine_a), b = Number(params.affine_b);
+    if (!Number.isInteger(a) || !Number.isInteger(b)) throw new Error("Affine a and b must be whole numbers.");
+    if (gcd(a, ALPHABET.length) !== 1) throw new Error(`Affine a=${a} is not coprime with the ${ALPHABET.length}-character alphabet.`);
+  }
+}
 function bytesToBase64(bytes) { let bin = ""; for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode(...bytes.slice(i, i + 0x8000)); return btoa(bin); }
 function base64ToBytes(text) { const bin = atob(text); const out = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i); return out; }
 </script>
