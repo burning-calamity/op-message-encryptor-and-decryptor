@@ -1,0 +1,397 @@
+MEGA LIST OF CIPHERS / CODECS TO ADD
+====================================
+
+Classical substitution / hand ciphers
+-------------------------------------
+1. AMSCO cipher [ADDED]
+2. Bazeries cipher [ADDED]
+3. Bifid variants: conjugated, 6x6, no-period mode [ADDED]
+4. Caesar with custom alphabet [ADDED]
+5. Caesar progressive shift [ADDED]
+6. Caesar random alphabet / keyed Caesar [ADDED: Keyed Caesar]
+7. Caesar with mixed alphabet [ADDED: Caesar Custom Alphabet]
+8. Caesar Della Porta disk variant [ADDED: Della Porta Disk]
+8a. Alberti cipher disk [ADDED: Alberti Disk]
+8b. Wolseley cipher disk [ADDED]
+8c. Dorabella cipher alphabet [ADDED]
+8d. SLIDEX tactical field code [ADDED]
+9. Chaocipher [ADDED]
+10. Checkerboard transposition [ADDED]
+11. Chiffre Indechiffrable variants [ADDED]
+12. Cistercian numerals [ADDED]
+13. Clave cipher [ADDED]
+14. Codebook substitution with user dictionary [ADDED]
+15. Condi cipher [ADDED]
+16. Damm cipher/check digit codec [ADDED: Damm Check]
+17. Delastelle Four-square variants
+18. Delastelle Trifid variants
+19. Digrafid cipher
+20. Dvorak keyboard substitution [ADDED]
+21. Foursquare 6x6 alphanumeric [ADDED: Four-Square 6x6]
+22. Gromark cipher [ADDED]
+23. Hagelin-style pinwheel toy cipher [ADDED: Hagelin Toy]
+24. Headline puzzle cipher [ADDED: Headline Puzzle]
+25. Homophonic frequency-weighted substitution [ADDED: Homophonic Substitution]
+26. Interrupted key cipher [ADDED]
+27. Kamasutra cipher [ADDED]
+28. Keyed alphabet with arbitrary alphabets [ADDED]
+29. Keyed Caesar progressive [ADDED]
+30. Keyphrase transposition cipher [ADDED]
+31. Latin alphabet reverse with custom alphabets [ADDED]
+32. Letter-number A1Z26 variants [ADDED: basic A1Z26]
+33. Lorenz-style toy cipher [ADDED: Lorenz Toy]
+34. M-94 / Jefferson disk cipher [ADDED: Jefferson Disk]
+35. Monome-dinome cipher [ADDED]
+36. Morbit cipher [ADDED]
+37. Nicodemus cipher [ADDED]
+38. Nihilist substitution variants [ADDED: Nihilist Substitution]
+39. Null cipher / acrostic cipher [ADDED: Null Acrostic]
+40. Phillips cipher [ADDED]
+41. Phillips RC cipher [ADDED]
+42. Pollux cipher [ADDED]
+43. Progressive key cipher [ADDED]
+44. Quagmire V/VI experimental variants [ADDED]
+45. Ragbaby cipher [ADDED]
+46. Redefence cipher [ADDED]
+47. Running-key with book text loader [ADDED: parameterized book text]
+48. Seriated Playfair [ADDED]
+49. Slidefair cipher [ADDED]
+50. Solitaire/Pontifex with exact test-vector mode
+51. Straddling checkerboard with configurable row digits [ADDED]
+52. Swagman cipher [ADDED]
+53. Tri-square cipher [ADDED]
+54. Trifid 6x6 variant
+55. Trithemius cipher [ADDED]
+56. Twin Bifid cipher [ADDED]
+57. Two-square horizontal/vertical variants [ADDED: Two-Square Vertical]
+58. Variant Beaufort with autokey [ADDED: Variant Beaufort + autokey]
+59. Vigenere with custom alphabet [ADDED]
+60. Vigenere progressive-key [ADDED]
+61. Vigenere Beaufort tabula recta variants [ADDED: Beaufort Autokey]
+62. Wheatstone cryptograph simulator [ADDED]
+63. Word Caesar / vocabulary shift [ADDED]
+64. Word substitution dictionary cipher [ADDED]
+65. Zygalski-sheet inspired toy cipher
+
+Transposition / route ciphers
+-----------------------------
+66. Alternating columnar transposition [ADDED]
+67. Auto-route spiral variants [ADDED: Spiral Inward/Outward Route]
+68. Boustrophedon route cipher [ADDED]
+69. Cadenus cipher [ADDED]
+70. Columnar with padding policy options [ADDED: Columnar Padded]
+71. Complete columnar transposition [ADDED]
+72. Disrupted transposition [ADDED]
+73. Double columnar with irregular columns [ADDED: Double Columnar Irregular]
+74. Fleissner grille / turning grille [ADDED: Fleissner Grille]
+75. Grille cipher from mask file [ADDED: Grille Mask]
+76. Incomplete columnar transposition variants [ADDED: Incomplete Columnar]
+77. Myszkowski with duplicate-key policy modes
+78. Rail fence with offset [ADDED]
+79. Rail fence with spaces preserved [ADDED]
+80. Raster / bitmap route cipher [ADDED: Raster Bits]
+81. Reading-order route presets [ADDED: Reading Order Route]
+82. Redefence / rail-fence with key order
+83. Rotating square route cipher [ADDED]
+84. Route cipher with inward/outward spiral options [ADDED]
+85. Scytale with padding modes [ADDED: Scytale Padded]
+86. Skip / permutation cipher [ADDED]
+87. Spiral route cipher [ADDED]
+88. Swagman transposition
+89. Turning cardan grille [ADDED: Cardan Grille, Turning Cardan Grille]
+90. Vertical transposition with numeric key [ADDED]
+
+Polygraphic / matrix ciphers
+----------------------------
+91. 3x3 Hill cipher [ADDED]
+92. 4x4 Hill cipher [ADDED: Hill NxN]
+93. Arbitrary-size Hill cipher [ADDED: Hill NxN]
+94. Hill cipher with custom modulus [ADDED: Hill NxN custom alphabet]
+95. Playfair 6x6 alphanumeric [ADDED]
+96. Playfair with Q omitted instead of J [ADDED: Playfair Q Omitted]
+97. Playfair preserving spaces/punctuation [ADDED: Playfair Preserve]
+98. Playfair padding policy selection [ADDED: Playfair Padding]
+99. Bifid 6x6 alphanumeric [ADDED]
+100. Trifid full 27-symbol configurable alphabet [ADDED: Trifid Custom Alphabet]
+101. Four-square 6x6 [ADDED]
+102. Two-square 6x6 [ADDED]
+103. Double Playfair [ADDED]
+104. Porta polyalphabetic exact historical table
+105. ADFGX with configurable Polybius labels [ADDED: ADFGX Custom Labels]
+106. ADFGVX preserving punctuation with escapes [ADDED: ADFGVX Escaped]
+107. Polybius with custom coordinates [ADDED: Polybius Custom Labels]
+108. Polybius fractionation chained with transposition [ADDED: Polybius Columnar]
+
+Telegraph, radio, symbols, and novelty
+--------------------------------------
+109. Baudot ITA2 [ADDED]
+110. Murray code [ADDED]
+111. Tap code variants [ADDED: classic C/K tap code]
+112. Knock code [ADDED]
+113. NATO phonetic alphabet encode/decode [ADDED]
+114. APCO phonetic alphabet [ADDED]
+115. Flag semaphore exact arm-pair notation [ADDED: Semaphore Arms]
+116. Maritime signal flags [ADDED: Maritime Signal Flags]
+117. Braille Unicode codec [ADDED: Grade-1 letters]
+118. Grade-1 Braille text codec [ADDED: Braille Grade 1]
+119. Moon type [ADDED]
+120. Pigpen graphical Unicode symbols [ADDED: Pigpen Unicode]
+121. Dancing Men cipher [ADDED]
+122. Music notes cipher [ADDED]
+123. Solresol [ADDED]
+124. Galactic alphabet / Standard Galactic Alphabet [ADDED: Standard Galactic]
+125. Aurebesh [ADDED]
+126. Theban alphabet [ADDED]
+127. Elder Futhark runes [ADDED]
+128. Younger Futhark runes [ADDED]
+129. Ogham script mapping [ADDED]
+130. Tolkien Cirth transliteration [ADDED: Cirth]
+131. Tengwar transliteration mode [ADDED: Tengwar Tokens]
+132. Zodiac-style symbol substitution template [ADDED: Zodiac Symbols]
+133. Wingdings/Webdings mapping [ADDED: Wingdings Tokens]
+134. Calculator spelling [ADDED]
+135. Upside-down text [ADDED]
+136. Mirror text Unicode [ADDED]
+137. Zalgo text encoder/cleaner [ADDED]
+138. Invisible Unicode steganography [ADDED]
+139. Zero-width character binary codec [ADDED]
+140. Emoji binary codec variants
+141. Emoji alphabet substitution packs
+142. Bacon biliteral typography steganography [ADDED: Bacon Biliteral]
+143. Whitespace language-compatible codec [ADDED: Whitespace Binary]
+144. Snow steganography style trailing-space codec [ADDED: Snow Steg]
+
+Encodings, bases, and binary transforms
+---------------------------------------
+145. Base16 with separators [ADDED]
+146. Base32 Crockford [ADDED]
+147. Base32hex [ADDED]
+148. Base45 [ADDED]
+149. Base62 [ADDED]
+150. Base91 [ADDED]
+151. Base92 [ADDED]
+152. Base100 emoji [ADDED]
+153. Z85 / ZeroMQ Base85 [ADDED: Z85]
+154. RFC 1924 IPv6 Base85 [ADDED: RFC1924 Base85]
+155. Base2048
+156. Base32768
+157. Bech32 / Bech32m
+158. Punycode [ADDED]
+159. Quoted-printable [ADDED]
+160. uuencode/uudecode [ADDED]
+161. xxencode/xxdecode [ADDED]
+162. yEnc [ADDED]
+163. netstring codec [ADDED]
+164. Bencode codec [ADDED: string form]
+165. MessagePack hex wrapper [ADDED]
+166. ASN.1 DER hex parser/formatter
+167. PEM armor wrapper [ADDED]
+168. OpenPGP ASCII armor wrapper [ADDED: OpenPGP Armor]
+169. Intel HEX record codec [ADDED: Intel HEX]
+170. Motorola S-record codec [ADDED: Motorola S-Record]
+171. Varint / LEB128 codec [ADDED: LEB128]
+172. Elias gamma coding [ADDED]
+173. Elias delta coding [ADDED]
+174. Fibonacci coding [ADDED]
+175. Golomb coding [ADDED]
+176. Huffman toy codec
+177. Arithmetic coding toy codec
+178. RLE compression codec [ADDED]
+179. Burrows-Wheeler transform [ADDED]
+180. Move-to-front transform [ADDED]
+181. LZ77 toy codec
+182. LZW toy codec
+183. DEFLATE wrapper [ADDED: Zlib Base64]
+184. gzip/zlib/base64 wrappers [ADDED: Zlib Base64/Gzip Base64]
+185. CRC append/verify wrappers [ADDED: CRC32 wrapper]
+186. Hexdump formatter/parser [ADDED]
+187. Binary with endian word grouping [ADDED]
+188. Octal escapes [ADDED]
+189. C string escapes [ADDED]
+190. JSON string escapes [ADDED]
+191. XML entities extended
+192. URL form encoding plus query parser [ADDED: form encode/decode]
+193. Data URI encoder/decoder [ADDED]
+194. QR alphanumeric mode codec
+195. QR byte segment formatter
+196. Reed-Solomon toy encoder
+197. Hamming(7,4) codec [ADDED]
+198. Hamming(15,11) codec [ADDED]
+199. Parity-bit codec [ADDED]
+200. Gray code codec [ADDED]
+
+Hashing, checksums, and KDF helpers
+-----------------------------------
+201. MD2
+202. MD4
+203. MD5 wrapper with salted formats [ADDED: MD5 wrapper]
+204. SHA-1/SHA-2/SHA-3 wrappers [ADDED: SHA1/SHA256/SHA3-256]
+205. BLAKE2b/BLAKE2s wrappers [ADDED]
+206. BLAKE3 optional dependency wrapper
+207. RIPEMD-160 optional wrapper
+208. Whirlpool optional wrapper
+209. CRC-8 variants [ADDED]
+210. CRC-16 variants [ADDED: CRC16-CCITT]
+211. CRC-32 variants [ADDED: zlib CRC32]
+212. CRC-64 variants [ADDED: CRC64-ECMA]
+213. Adler-32 [ADDED]
+214. Fletcher-16/Fletcher-32 [ADDED]
+215. Luhn checksum [ADDED]
+216. Verhoeff checksum [ADDED]
+217. Damm checksum [ADDED]
+218. HMAC wrapper [ADDED]
+219. PBKDF2 helper [ADDED]
+220. scrypt helper [ADDED]
+221. Argon2 optional helper
+222. HKDF helper [ADDED]
+223. TOTP/HOTP code generator [ADDED]
+
+Modern symmetric ciphers / modes
+--------------------------------
+224. AES-ECB/CBC/CTR/GCM wrappers (optional dependency) [ADDED: AES-ECB/CBC/CTR/GCM]
+224a. Fernet authenticated encryption tokens (optional dependency) [ADDED: Fernet Token]
+225. AES-SIV wrapper
+226. AES-KW key wrap
+227. DES/3DES educational wrappers
+228. Blowfish
+229. Twofish
+230. Serpent
+231. CAST-128
+232. CAST-256
+233. Camellia
+234. IDEA
+235. SEED
+236. ARIA
+237. RC2
+238. RC4-drop[n]
+239. RC6
+240. Rijndael variable block size
+241. Noekeon
+242. Skipjack
+243. MARS
+244. GOST 28147-89 / Magma
+245. Kuznyechik
+246. PRESENT lightweight cipher
+247. PRINCE lightweight cipher
+248. LEA
+249. HIGHT
+250. KATAN/KTANTAN toy support
+251. SIMON larger block/key variants
+252. SPECK larger block/key variants
+253. CHAM lightweight cipher
+254. CLEFIA
+255. Skinny block cipher
+256. Midori block cipher
+257. Piccolo block cipher
+258. Rectangle cipher
+259. LED block cipher
+260. KLEIN block cipher
+261. TWINE block cipher
+262. Gift block cipher
+263. Ascon AEAD/hash
+264. Xoodyak
+265. ISAP
+266. TinyJAMBU
+267. Romulus
+268. Elephant AEAD
+269. Grain stream cipher
+270. Trivium stream cipher
+271. MICKEY stream cipher
+272. Rabbit stream cipher
+273. HC-128
+274. HC-256
+275. ISAAC PRNG stream cipher
+276. VMPC
+277. Salsa20/8 and Salsa20/12
+278. XSalsa20
+279. XChaCha20
+280. ChaCha20-Poly1305 tagged AEAD [ADDED]
+281. XChaCha20-Poly1305 tagged AEAD
+282. Poly1305 MAC helper
+283. OCB mode wrapper
+284. EAX mode wrapper
+285. CCM mode wrapper
+286. CTR mode with custom counter format
+287. CBC with PKCS#7 padding
+288. CFB/OFB modes
+289. CTS ciphertext stealing mode
+290. NIST key-wrap modes
+
+Public-key / signatures / key exchange helpers
+-----------------------------------------------
+291. RSA raw textbook demo
+292. RSA-OAEP wrapper (optional dependency)
+293. RSA-PSS signature helper
+294. ElGamal toy demo
+295. Diffie-Hellman toy demo
+296. DSA signature helper
+297. ECDSA helper
+298. Ed25519 helper
+299. X25519 key exchange helper
+300. ECIES-style envelope demo
+301. Paillier toy demo
+302. Rabin cryptosystem demo
+303. Merkle-Hellman knapsack toy demo
+304. NTRU optional wrapper
+305. Kyber / ML-KEM optional wrapper
+306. Dilithium / ML-DSA optional wrapper
+307. SPHINCS+ optional wrapper
+308. Classic McEliece optional wrapper
+
+Steganography and puzzle helpers
+--------------------------------
+309. Least significant bit image stego
+310. WAV audio LSB stego
+311. PNG chunk hidden text
+312. EXIF metadata hider/extractor
+313. PDF metadata hider/extractor
+314. ZIP comment hider/extractor
+315. Acrostic generator [ADDED: Acrostic Generator]
+316. Every-nth-character extractor [ADDED: Every Nth Hider]
+317. Book cipher with source text file [ADDED: Book Cipher]
+318. Coordinate book cipher [ADDED: Dictionary Code]
+319. Page-line-word-letter cipher [ADDED: Page-Line-Word-Letter]
+320. Word ladder cipher
+321. Dictionary rank cipher [ADDED: Dictionary Code]
+322. Phone keypad/T9 cipher [ADDED: T9 Keypad]
+323. Multi-tap phone keypad [ADDED]
+324. Vanity phone number codec [ADDED: Vanity Phone]
+325. Keyboard coordinate cipher [ADDED: Keyboard Coordinates]
+326. QWERTY adjacency cipher variants [ADDED: QWERTY Adjacent]
+327. Chessboard coordinate cipher [ADDED: Chessboard Coordinates]
+328. International Code of Signals phrases [ADDED: International Code Signals]
+329. QR code image generation/reading
+330. Data Matrix generation/reading
+331. Aztec code generation/reading
+332. PDF417 generation/reading
+333. Barcode Code 39/128 codec
+334. Color square / RGB triplet codec
+335. Hex color text codec [ADDED]
+336. DNA codon codec [ADDED: DNA Codons]
+337. RNA codon codec [ADDED: RNA Codons]
+338. Amino-acid one/three-letter codec [ADDED: Amino Acid 1/3]
+339. I Ching hexagram binary codec [ADDED: I Ching Hexagrams]
+340. Tarot-card substitution codec [ADDED: Tarot Cards]
+
+Analysis and brute-force helpers to pair with additions
+-------------------------------------------------------
+341. Frequency analysis report
+342. Index of coincidence calculator
+343. Kasiski examination helper
+344. Friedman test helper
+345. N-gram scoring with bundled frequencies
+346. Simulated annealing substitution solver
+347. Hill-climbing Playfair solver
+348. Columnar transposition key search
+349. Rail fence automatic rail detector
+350. Caesar/affine auto-solver
+351. Vigenere key-length guesser
+352. Crib dragging for XOR and stream ciphers
+353. XOR repeating-key breaker
+354. Single-byte XOR breaker
+355. English word segmentation scorer
+356. Language profiles beyond English
+357. Entropy calculator
+358. Avalanche tester for block ciphers
+359. Known-answer test-vector runner
+360. Registry round-trip test generator

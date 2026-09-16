@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>All The Ciphers</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, sans-serif; margin: 0; background: #0f1116; color: #e6edf3; line-height: 1.55; }
+    main { max-width: 900px; margin: 0 auto; padding: 48px 20px; }
+    h1 { font-size: 3rem; margin-bottom: 0.2rem; }
+    h2 { margin-top: 2rem; }
+    code, pre { background: #161b22; border: 1px solid #30363d; border-radius: 8px; }
+    code { padding: 0.1rem 0.3rem; }
+    pre { padding: 1rem; overflow-x: auto; }
+    a { color: #58a6ff; }
+    .card { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 18px; margin: 16px 0; }
+  </style>
+</head>
+<body>
+<main>
+  <h1>All The Ciphers</h1>
+  <p>A Python library and CLI for classical ciphers, encodings, SmartGuess, and brute-force helpers.</p>
+
+  <div class="card">
+    <h2>Install</h2>
+    <pre><code>pip install git+https://github.com/YOUR-USERNAME/all-the-ciphers.git</code></pre>
+  </div>
+
+  <div class="card">
+    <h2>Use as a library</h2>
+    <pre><code>from all_the_ciphers import encode, decode
+
+ct = encode("Caesar", "HELLO WORLD", shift=3)
+pt = decode("Caesar", ct, shift=3)
+print(ct, pt)</code></pre>
+  </div>
+
+  <div class="card">
+    <h2>Use from terminal</h2>
+    <pre><code>python -m all_the_ciphers list
+python -m all_the_ciphers encode Caesar "HELLO WORLD" -p shift=3
+python -m all_the_ciphers guess "Gur dhvpx oebja sbk"</code></pre>
+  </div>
+
+  <p>Edit this page in <code>docs/index.html</code>.</p>
+</main>
+</body>
+</html>
