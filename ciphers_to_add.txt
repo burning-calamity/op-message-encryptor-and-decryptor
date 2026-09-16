@@ -61,6 +61,7 @@ Classical substitution / hand ciphers
 52. Swagman cipher [ADDED]
 53. Tri-square cipher [ADDED]
 54. Trifid 6x6 variant
+54a. Trifid 4x4x4 (64-symbol cube) [ADDED]
 55. Trithemius cipher [ADDED]
 56. Twin Bifid cipher [ADDED]
 57. Two-square horizontal/vertical variants [ADDED: Two-Square Vertical]
@@ -72,6 +73,8 @@ Classical substitution / hand ciphers
 63. Word Caesar / vocabulary shift [ADDED]
 64. Word substitution dictionary cipher [ADDED]
 65. Zygalski-sheet inspired toy cipher
+65a. DRYAD numeral field-code simulator [ADDED]
+65b. BATCO tactical field-code simulator [ADDED]
 
 Transposition / route ciphers
 -----------------------------
@@ -395,3 +398,8 @@ Analysis and brute-force helpers to pair with additions
 358. Avalanche tester for block ciphers
 359. Known-answer test-vector runner
 360. Registry round-trip test generator
+361. Enigma M4 thin-rotor/reflector support [ADDED]
+362. Bounded Enigma moving-position crib search [ADDED]
+363. Hash shape identification [ADDED]
+364. Bounded hash preimage candidate search [ADDED]
+365. FNV-1a 32, MurmurHash3 32, and CRC32C wrappers [ADDED]

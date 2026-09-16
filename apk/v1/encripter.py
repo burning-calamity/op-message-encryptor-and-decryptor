@@ -25,6 +25,7 @@ import gzip
 import hmac
 import importlib
 import importlib.util
+import itertools
 import json
 import math
 import quopri
@@ -869,6 +870,163 @@ def MaryQueenScots_decode(text: str, sep: str = " ") -> str:
             out.append(ALPHA[int(tok) - 1])
         else:
             out.append(tok)
+    return "".join(out)
+
+def _field_code_alphabet(keyword: str, alphabet: str = ALPHA) -> str:
+    """Return a stable keyed alphabet for paper field-code simulators."""
+    return "".join(dict.fromkeys(
+        ch for ch in (str(keyword).upper() + alphabet) if ch in alphabet
+    ))
+
+
+def _dryad_groups(keyword: str, row: str) -> List[str]:
+    keyed = _field_code_alphabet((keyword or "DRYAD") + (row or "A"))
+    # Ten reversible digit columns covering all 26 letters.
+    sizes = (3, 3, 3, 3, 3, 3, 2, 2, 2, 2)
+    groups = []
+    offset = 0
+    for size in sizes:
+        groups.append(keyed[offset:offset + size])
+        offset += size
+    return groups
+
+
+def DRYADNumeral_encode(text: str, keyword: str = "DRYAD", row: str = "A", sep: str = "") -> str:
+    """Encode decimal figures with a deterministic DRYAD-style letter row.
+
+    This models the manual numeral-substitution workflow while making the
+    selected row reproducible from a keyword for reliable round trips.
+    Non-digits are preserved, allowing formatted coordinates and times; literal
+    letters are escaped so they cannot be mistaken for encoded figures.
+    """
+    groups = _dryad_groups(keyword, row)
+    out = []
+    digit_index = 0
+    for ch in str(text):
+        if ch.isdigit():
+            group = groups[int(ch)]
+            pick = (digit_index + ord((row or "A")[0])) % len(group)
+            out.append(group[pick])
+            digit_index += 1
+        elif ch.isalpha():
+            out.append("~" + f"{ord(ch):04X}")
+        else:
+            out.append(ch)
+    return sep.join(out) if sep else "".join(out)
+
+
+def DRYADNumeral_decode(text: str, keyword: str = "DRYAD", row: str = "A", sep: str = "") -> str:
+    groups = _dryad_groups(keyword, row)
+    reverse = {letter: str(digit) for digit, group in enumerate(groups) for letter in group}
+    body = str(text)
+    if sep:
+        body = body.replace(sep, "")
+    out = []
+    index = 0
+    while index < len(body):
+        if body[index] == "~" and index + 5 <= len(body):
+            try:
+                out.append(chr(int(body[index + 1:index + 5], 16)))
+                index += 5
+                continue
+            except ValueError:
+                pass
+        out.append(reverse.get(body[index].upper(), body[index]))
+        index += 1
+    return "".join(out)
+
+
+def _batco_square(keyword: str, indicator: str) -> Tuple[str, Dict[str, str], Dict[str, str]]:
+    alphabet = ALPHA + string.digits
+    keyed = _field_code_alphabet((indicator or "A") + (keyword or "BATCO"), alphabet)
+    labels = "ADFGVX"
+    enc = {}
+    dec = {}
+    for index, ch in enumerate(keyed):
+        token = labels[index // 6] + labels[index % 6]
+        enc[ch] = token
+        dec[token] = ch
+    return keyed, enc, dec
+
+
+def BATCOFieldCode_encode(text: str, keyword: str = "BATCO", indicator: str = "A", sep: str = " ") -> str:
+    """Encode text with a keyed BATCO-inspired tactical digraph table."""
+    _square, enc, _dec = _batco_square(keyword, indicator)
+    tokens = []
+    for ch in str(text).upper():
+        if ch in enc:
+            tokens.append(enc[ch])
+        elif ch.isspace():
+            tokens.append("/")
+        else:
+            tokens.append("~" + f"{ord(ch):04X}")
+    return sep.join(tokens) if sep else "".join(tokens)
+
+
+def BATCOFieldCode_decode(text: str, keyword: str = "BATCO", indicator: str = "A", sep: str = " ") -> str:
+    _square, _enc, dec = _batco_square(keyword, indicator)
+    if sep:
+        tokens = str(text).split(sep)
+    else:
+        tokens = re.findall(r"~[0-9A-Fa-f]{4}|/|..", str(text))
+    out = []
+    for token in tokens:
+        if token == "/":
+            out.append(" ")
+        elif token in dec:
+            out.append(dec[token])
+        elif token.startswith("~") and len(token) == 5:
+            try:
+                out.append(chr(int(token[1:], 16)))
+            except ValueError:
+                out.append(token)
+        else:
+            out.append(token)
+    return "".join(out)
+
+
+def _trifid4_cube(key: str) -> Tuple[str, Dict[str, Tuple[int, int, int]]]:
+    alphabet = string.ascii_uppercase + string.ascii_lowercase + string.digits + "+/"
+    cube = "".join(dict.fromkeys(ch for ch in (str(key) + alphabet) if ch in alphabet))
+    positions = {}
+    for index, ch in enumerate(cube):
+        positions[ch] = (index // 16, (index % 16) // 4, index % 4)
+    return cube, positions
+
+
+def Trifid4x4x4_encode(text: str, key: str = "Trifid", period: int = 5) -> str:
+    """Fractionate a 64-symbol alphabet through a true 4x4x4 Trifid cube."""
+    cube, positions = _trifid4_cube(key)
+    source = "".join(ch for ch in str(text) if ch in positions)
+    period = max(1, int(period))
+    out = []
+    for offset in range(0, len(source), period):
+        block = source[offset:offset + period]
+        stream = []
+        coords = [positions[ch] for ch in block]
+        for axis in range(3):
+            stream.extend(coord[axis] for coord in coords)
+        for index in range(0, len(stream), 3):
+            a, b, c = stream[index:index + 3]
+            out.append(cube[a * 16 + b * 4 + c])
+    return "".join(out)
+
+
+def Trifid4x4x4_decode(text: str, key: str = "Trifid", period: int = 5) -> str:
+    cube, positions = _trifid4_cube(key)
+    source = "".join(ch for ch in str(text) if ch in positions)
+    period = max(1, int(period))
+    out = []
+    for offset in range(0, len(source), period):
+        block = source[offset:offset + period]
+        stream = []
+        for ch in block:
+            stream.extend(positions[ch])
+        length = len(block)
+        axes = (stream[:length], stream[length:2 * length], stream[2 * length:])
+        for index in range(length):
+            a, b, c = axes[0][index], axes[1][index], axes[2][index]
+            out.append(cube[a * 16 + b * 4 + c])
     return "".join(out)
 
 def SLIDEX_encode(text: str, key: str = "SLIDEX", row_labels: str = "12345", col_labels: str = "12345", sep: str = " ") -> str:
@@ -3015,28 +3173,35 @@ _ENIGMA_ROTORS = {
     "III": ("BDFHJLCPRTXVZNYEIWGAKMUSQO", "V"),
     "IV": ("ESOVPZJAYQUIRHXLNFTGKDCMWB", "J"),
     "V": ("VZBRGITYUPSDNHLXAWMJQOFECK", "Z"),
+    "VI": ("JPGVOUMFYQBENHZRDKASXLICTW", "ZM"),
+    "VII": ("NZJHGRCXMYSWBOUFAIVLPEKQDT", "ZM"),
+    "VIII": ("FKQHTLXOCBJSPDZRAMEWNIUYGV", "ZM"),
+    "BETA": ("LEYJVCNIXWPBQMDRTAKZGFUHOS", ""),
+    "GAMMA": ("FSOKANUERHMBTIYCWLQPZXVGJD", ""),
 }
 _ENIGMA_REFLECTORS = {
     "B": "YRUHQSLDPXNGOKMIEBFZCWVJAT",
     "C": "FVPJIAOYEDRZXWGCTKUQSBNMHL",
+    "BTHIN": "ENKQAUYWJICOPBLMDXZVFTHRGS",
+    "CTHIN": "RDOBJNTKVEHMLFCWZAXGYIPSUQ",
 }
 
 def _enigma_parse_rotors(rotors: str) -> List[str]:
     parts = [p.strip().upper() for p in re.split(r"[,\s-]+", str(rotors)) if p.strip()]
     if not parts:
         parts = ["I", "II", "III"]
+    if len(parts) not in (3, 4):
+        raise ValueError("Enigma machines require three rotors, or four for M4")
     out = []
-    for part in parts[:3]:
+    for part in parts:
         if part not in _ENIGMA_ROTORS:
             raise ValueError(f"unknown rotor {part!r}")
         out.append(part)
-    while len(out) < 3:
-        out.append(["I", "II", "III"][len(out)])
     return out
 
-def _enigma_positions(setting: str) -> List[int]:
+def _enigma_positions(setting: str, count: int = 3) -> List[int]:
     letters = [ch for ch in str(setting).upper() if ch in ALPHA]
-    letters = (letters + list("AAA"))[:3]
+    letters = (letters + ["A"] * count)[:count]
     return [ALPHA.index(ch) for ch in letters]
 
 def _enigma_plugboard_pairs(plugboard: str) -> Dict[str, str]:
@@ -3054,12 +3219,18 @@ def _enigma_plugboard_pairs(plugboard: str) -> Dict[str, str]:
 
 def _enigma_step(rotor_names: List[str], pos: List[int]) -> None:
     notches = [_ENIGMA_ROTORS[name][1] for name in rotor_names]
-    if ALPHA[pos[1]] in notches[1]:
-        pos[0] = (pos[0] + 1) % 26
-        pos[1] = (pos[1] + 1) % 26
-    if ALPHA[pos[2]] in notches[2]:
-        pos[1] = (pos[1] + 1) % 26
-    pos[2] = (pos[2] + 1) % 26
+    # M4's leftmost Beta/Gamma rotor is stationary; its rightmost three
+    # rotors use the same double-stepping mechanism as M3.
+    left = len(rotor_names) - 3
+    middle = len(rotor_names) - 2
+    right = len(rotor_names) - 1
+    middle_at_notch = ALPHA[pos[middle]] in notches[middle]
+    right_at_notch = ALPHA[pos[right]] in notches[right]
+    if middle_at_notch:
+        pos[left] = (pos[left] + 1) % 26
+    if middle_at_notch or right_at_notch:
+        pos[middle] = (pos[middle] + 1) % 26
+    pos[right] = (pos[right] + 1) % 26
 
 def _enigma_forward(idx: int, wiring: str, pos: int, ring: int) -> int:
     shifted = (idx + pos - ring) % 26
@@ -3072,11 +3243,14 @@ def _enigma_backward(idx: int, wiring: str, pos: int, ring: int) -> int:
     return (wired - pos + ring) % 26
 
 def EnigmaI_encode(text: str, rotors: str = "I II III", reflector: str = "B", ring: str = "AAA", setting: str = "AAA", plugboard: str = "") -> str:
-    """Enigma I style rotor machine simulation with three rotors and plugboard."""
+    """Enigma M3/M4 simulation with double stepping and plugboard support."""
     rotor_names = _enigma_parse_rotors(rotors)
-    reflector_wiring = _ENIGMA_REFLECTORS.get(str(reflector).upper(), _ENIGMA_REFLECTORS["B"])
-    rings = _enigma_positions(ring)
-    pos = _enigma_positions(setting)
+    reflector_name = str(reflector).upper().replace("-", "")
+    if reflector_name not in _ENIGMA_REFLECTORS:
+        raise ValueError(f"unknown reflector {reflector!r}")
+    reflector_wiring = _ENIGMA_REFLECTORS[reflector_name]
+    rings = _enigma_positions(ring, len(rotor_names))
+    pos = _enigma_positions(setting, len(rotor_names))
     plugs = _enigma_plugboard_pairs(plugboard)
     wirings = [_ENIGMA_ROTORS[name][0] for name in rotor_names]
     out = []
@@ -3088,10 +3262,10 @@ def EnigmaI_encode(text: str, rotors: str = "I II III", reflector: str = "B", ri
         _enigma_step(rotor_names, pos)
         up = plugs.get(up, up)
         idx = ALPHA.index(up)
-        for i in (2, 1, 0):
+        for i in reversed(range(len(wirings))):
             idx = _enigma_forward(idx, wirings[i], pos[i], rings[i])
         idx = ALPHA.index(reflector_wiring[idx])
-        for i in (0, 1, 2):
+        for i in range(len(wirings)):
             idx = _enigma_backward(idx, wirings[i], pos[i], rings[i])
         mapped = plugs.get(ALPHA[idx], ALPHA[idx])
         out.append(mapped if ch.isupper() else mapped.lower())
@@ -3099,6 +3273,40 @@ def EnigmaI_encode(text: str, rotors: str = "I II III", reflector: str = "B", ri
 
 def EnigmaI_decode(text: str, rotors: str = "I II III", reflector: str = "B", ring: str = "AAA", setting: str = "AAA", plugboard: str = "") -> str:
     return EnigmaI_encode(text, rotors, reflector, ring, setting, plugboard)
+
+
+def EnigmaM4_encode(text: str, rotors: str = "Beta I II III", reflector: str = "BThin", ring: str = "AAAA", setting: str = "AAAA", plugboard: str = "") -> str:
+    return EnigmaI_encode(text, rotors, reflector, ring, setting, plugboard)
+
+
+def EnigmaM4_decode(text: str, rotors: str = "Beta I II III", reflector: str = "BThin", ring: str = "AAAA", setting: str = "AAAA", plugboard: str = "") -> str:
+    return EnigmaM4_encode(text, rotors, reflector, ring, setting, plugboard)
+
+
+def crack_enigma_positions(ciphertext: str, rotors: str = "I II III", reflector: str = "B", ring: str = "AAA", plugboard: str = "", crib: str = "", max_results: int = 10, max_trials: int = 17576) -> List[Dict[str, object]]:
+    """Search bounded M3/M4 moving-rotor starting positions.
+
+    For M4 the Greek rotor remains at A while the three moving positions are
+    searched. Supplying a crib dramatically reduces false positives.
+    """
+    rotor_names = _enigma_parse_rotors(rotors)
+    prefix = "A" if len(rotor_names) == 4 else ""
+    clean_crib = "".join(ch for ch in str(crib).upper() if ch in ALPHA_SET)
+    results = []
+    trials = 0
+    for letters in itertools.product(ALPHA, repeat=3):
+        if trials >= max(1, int(max_trials)):
+            break
+        setting = prefix + "".join(letters)
+        plaintext = EnigmaI_decode(ciphertext, rotors, reflector, ring, setting, plugboard)
+        trials += 1
+        clean_plain = "".join(ch for ch in plaintext.upper() if ch in ALPHA_SET)
+        if clean_crib and clean_crib not in clean_plain:
+            continue
+        score = english_score(plaintext)
+        results.append({"setting": setting, "plaintext": plaintext, "score": score})
+    results.sort(key=lambda item: float(item["score"]), reverse=True)
+    return results[:max(1, int(max_results))]
 
 def _m209_stream(key: str, wheels: str = "26,25,23,21,19,17") -> Iterator[int]:
     periods = [max(2, int(x.strip())) for x in str(wheels).split(",") if x.strip()] or [26, 25, 23, 21, 19, 17]
@@ -6350,6 +6558,158 @@ def SHA3_256_encode(text: str) -> str:
 def SHA3_256_decode(text: str) -> str:
     return _hash_wrapper_decode(text, "sha3_256")
 
+
+def _fnv1a32_bytes(data: bytes) -> int:
+    value = 0x811C9DC5
+    for byte in data:
+        value ^= byte
+        value = (value * 0x01000193) & 0xFFFFFFFF
+    return value
+
+
+def _murmur3_x86_32_bytes(data: bytes, seed: int = 0) -> int:
+    value = seed & 0xFFFFFFFF
+    for offset in range(0, len(data) & ~3, 4):
+        block = int.from_bytes(data[offset:offset + 4], "little")
+        block = (block * 0xCC9E2D51) & 0xFFFFFFFF
+        block = ((block << 15) | (block >> 17)) & 0xFFFFFFFF
+        block = (block * 0x1B873593) & 0xFFFFFFFF
+        value ^= block
+        value = ((value << 13) | (value >> 19)) & 0xFFFFFFFF
+        value = (value * 5 + 0xE6546B64) & 0xFFFFFFFF
+    tail = data[len(data) & ~3:]
+    block = 0
+    if len(tail) == 3:
+        block ^= tail[2] << 16
+    if len(tail) >= 2:
+        block ^= tail[1] << 8
+    if tail:
+        block ^= tail[0]
+        block = (block * 0xCC9E2D51) & 0xFFFFFFFF
+        block = ((block << 15) | (block >> 17)) & 0xFFFFFFFF
+        block = (block * 0x1B873593) & 0xFFFFFFFF
+        value ^= block
+    value ^= len(data)
+    value ^= value >> 16
+    value = (value * 0x85EBCA6B) & 0xFFFFFFFF
+    value ^= value >> 13
+    value = (value * 0xC2B2AE35) & 0xFFFFFFFF
+    value ^= value >> 16
+    return value & 0xFFFFFFFF
+
+
+def _crc32c_bytes(data: bytes) -> int:
+    value = 0xFFFFFFFF
+    for byte in data:
+        value ^= byte
+        for _ in range(8):
+            value = (value >> 1) ^ (0x82F63B78 if value & 1 else 0)
+    return (value ^ 0xFFFFFFFF) & 0xFFFFFFFF
+
+
+_HASH_SEARCH_SPECS = {
+    "md5": (128, lambda data: hashlib.md5(data).hexdigest()),
+    "sha1": (160, lambda data: hashlib.sha1(data).hexdigest()),
+    "sha224": (224, lambda data: hashlib.sha224(data).hexdigest()),
+    "sha256": (256, lambda data: hashlib.sha256(data).hexdigest()),
+    "sha384": (384, lambda data: hashlib.sha384(data).hexdigest()),
+    "sha512": (512, lambda data: hashlib.sha512(data).hexdigest()),
+    "sha3-256": (256, lambda data: hashlib.sha3_256(data).hexdigest()),
+    "blake2s": (256, lambda data: hashlib.blake2s(data).hexdigest()),
+    "blake2b": (512, lambda data: hashlib.blake2b(data).hexdigest()),
+    "fnv1a32": (32, lambda data: f"{_fnv1a32_bytes(data):08x}"),
+    "murmur3-32": (32, lambda data: f"{_murmur3_x86_32_bytes(data):08x}"),
+    "crc32": (32, lambda data: f"{zlib.crc32(data) & 0xFFFFFFFF:08x}"),
+    "crc32c": (32, lambda data: f"{_crc32c_bytes(data):08x}"),
+}
+
+
+def identify_hash(target: str) -> List[str]:
+    """Return plausible algorithms based on a hexadecimal digest's shape."""
+    value = str(target).strip()
+    tagged = re.match(r"^\[([^]]+)]([0-9A-Fa-f]+)", value)
+    if tagged:
+        tag = tagged.group(1).lower().replace("_", "-")
+        value = tagged.group(2)
+        direct = [name for name in _HASH_SEARCH_SPECS if name.replace("_", "-") == tag]
+        if direct:
+            return direct
+    value = re.sub(r"^(?:0x)?", "", value, flags=re.IGNORECASE)
+    if not value or not re.fullmatch(r"[0-9A-Fa-f]+", value):
+        return []
+    bits = len(value) * 4
+    return [name for name, (width, _func) in _HASH_SEARCH_SPECS.items() if width == bits]
+
+
+def search_hash_preimage(target: str, algorithm: str = "sha256", charset: str = string.ascii_lowercase, min_length: int = 1, max_length: int = 4, max_attempts: int = 100000) -> Dict[str, object]:
+    """Search a bounded candidate space; this does not reverse a hash."""
+    algorithm = str(algorithm).lower().replace("_", "-")
+    aliases = {name.replace("_", "-"): name for name in _HASH_SEARCH_SPECS}
+    if algorithm not in aliases:
+        raise ValueError(f"unsupported hash algorithm: {algorithm}")
+    canonical = aliases[algorithm]
+    _bits, digest_fn = _HASH_SEARCH_SPECS[canonical]
+    expected = re.sub(r"^(?:0x)?", "", str(target).strip(), flags=re.IGNORECASE).lower()
+    if not re.fullmatch(r"[0-9a-f]+", expected):
+        raise ValueError("target must be a hexadecimal digest")
+    charset = "".join(dict.fromkeys(str(charset)))
+    if not charset:
+        raise ValueError("charset must not be empty")
+    min_length = max(0, int(min_length))
+    max_length = int(max_length)
+    if max_length < min_length or max_length > 12:
+        raise ValueError("length range must be ordered and max_length must be at most 12")
+    limit = max(1, min(int(max_attempts), 1000000))
+    attempts = 0
+    for length in range(min_length, max_length + 1):
+        for chars in itertools.product(charset, repeat=length):
+            if attempts >= limit:
+                return {"found": False, "candidate": None, "attempts": attempts, "truncated": True, "algorithm": canonical}
+            candidate = "".join(chars)
+            attempts += 1
+            if hmac.compare_digest(digest_fn(candidate.encode("utf-8")), expected):
+                return {"found": True, "candidate": candidate, "attempts": attempts, "truncated": False, "algorithm": canonical}
+    return {"found": False, "candidate": None, "attempts": attempts, "truncated": False, "algorithm": canonical}
+
+
+def _verified_int_hash_encode(text: str, label: str, digest_fn) -> str:
+    digest = digest_fn(text.encode("utf-8"))
+    return f"[{label}]{digest:08x}|{text}"
+
+
+def _verified_int_hash_decode(text: str, label: str, digest_fn) -> str:
+    tag = f"[{label}]"
+    if not str(text).startswith(tag) or "|" not in str(text):
+        return f"Err:bad {label} format"
+    metadata, body = str(text).split("|", 1)
+    expected = metadata[len(tag):].lower()
+    actual = f"{digest_fn(body.encode('utf-8')):08x}"
+    return body if hmac.compare_digest(actual, expected) else f"Err:{label} mismatch"
+
+
+def FNV1a32_encode(text: str) -> str:
+    return _verified_int_hash_encode(text, "FNV1A32", _fnv1a32_bytes)
+
+
+def FNV1a32_decode(text: str) -> str:
+    return _verified_int_hash_decode(text, "FNV1A32", _fnv1a32_bytes)
+
+
+def Murmur3_32_encode(text: str) -> str:
+    return _verified_int_hash_encode(text, "MURMUR3-32", _murmur3_x86_32_bytes)
+
+
+def Murmur3_32_decode(text: str) -> str:
+    return _verified_int_hash_decode(text, "MURMUR3-32", _murmur3_x86_32_bytes)
+
+
+def CRC32C_encode(text: str) -> str:
+    return _verified_int_hash_encode(text, "CRC32C", _crc32c_bytes)
+
+
+def CRC32C_decode(text: str) -> str:
+    return _verified_int_hash_decode(text, "CRC32C", _crc32c_bytes)
+
 def HMAC_encode(text: str, key: str = "secret", algorithm: str = "sha256") -> str:
     try:
         digest = hmac.new(key.encode("utf-8"), text.encode("utf-8"), algorithm).hexdigest()
@@ -9424,6 +9784,8 @@ def get_registry() -> List[CipherEntry]:
         CipherEntry("Gold-Bug", GoldBug_encode, GoldBug_decode, [P("sep","Separator"," ")]),
         CipherEntry("Dancing Men Tokenized", DancingMenTokenized_encode, DancingMenTokenized_decode, [P("sep","Separator"," ")]),
         CipherEntry("Mary Queen of Scots Nomenclator", MaryQueenScots_encode, MaryQueenScots_decode, [P("sep","Separator"," ")]),
+        CipherEntry("DRYAD Numeral Simulator", DRYADNumeral_encode, DRYADNumeral_decode, [P("keyword","Daily key","DRYAD"), P("row","Row indicator","A"), P("sep","Separator","")]),
+        CipherEntry("BATCO Field Code Simulator", BATCOFieldCode_encode, BATCOFieldCode_decode, [P("keyword","Daily key","BATCO"), P("indicator","Message indicator","A"), P("sep","Separator"," ")]),
         CipherEntry("SLIDEX", SLIDEX_encode, SLIDEX_decode, [P("key","Grid key","SLIDEX"), P("row_labels","Row labels","12345"), P("col_labels","Column labels","12345"), P("sep","Separator"," ")]),
         CipherEntry("Alberti Disk", AlbertiDisk_encode, AlbertiDisk_decode, [P("outer","Outer alphabet","ABCDEFGHIJKLMNOPQRSTUVWXYZ"), P("inner_key","Inner key","CIPHER"), P("period","Period","5"), P("step","Step","1")]),
         CipherEntry("Wheatstone Cryptograph", WheatstoneCryptograph_encode, WheatstoneCryptograph_decode, [P("keyword","Keyword","WHEATSTONE"), P("indicator","Indicator","A")]),
@@ -9462,6 +9824,7 @@ def get_registry() -> List[CipherEntry]:
         CipherEntry("Raster Bits", RasterBits_encode, RasterBits_decode, [P("width","Width","8"), P("on","On char","#"), P("off","Off char",".")]),
         CipherEntry("Hagelin Toy", HagelinToy_encode, HagelinToy_decode, [P("seed","Seed","HAGELIN"), P("wheels","Wheels","17,19,21,23,25,26")]),
         CipherEntry("Enigma I", EnigmaI_encode, EnigmaI_decode, [P("rotors","Rotors","I II III"), P("reflector","Reflector","B"), P("ring","Ring setting","AAA"), P("setting","Message setting","AAA"), P("plugboard","Plugboard pairs","")]),
+        CipherEntry("Enigma M4", EnigmaM4_encode, EnigmaM4_decode, [P("rotors","Rotors","Beta I II III"), P("reflector","Thin reflector","BThin"), P("ring","Ring setting","AAAA"), P("setting","Message setting","AAAA"), P("plugboard","Plugboard pairs","")]),
         CipherEntry("M-209", M209_encode, M209_decode, [P("key","Key","M209"), P("wheels","Wheel periods","26,25,23,21,19,17")]),
         CipherEntry("Typex", Typex_encode, Typex_decode, [P("rotors","Rotors","IV V II"), P("reflector","Reflector","C"), P("ring","Ring setting","AAA"), P("setting","Message setting","AAA"), P("plugboard","Plugboard pairs","")]),
         CipherEntry("SIGABA Toy", SIGABAToy_encode, SIGABAToy_decode, [P("key","Key","SIGABA"), P("control","Control key","CONTROL")]),
@@ -9599,6 +9962,9 @@ def get_registry() -> List[CipherEntry]:
         CipherEntry("Data URI", DataURI_encode, DataURI_decode, [P("mime","MIME","text/plain;charset=utf-8")]),
         CipherEntry("URL Form", URLForm_encode, URLForm_decode, []),
         CipherEntry("CRC32", CRC32_encode, CRC32_decode, []),
+        CipherEntry("CRC32C", CRC32C_encode, CRC32C_decode, []),
+        CipherEntry("FNV-1a 32", FNV1a32_encode, FNV1a32_decode, []),
+        CipherEntry("MurmurHash3 32", Murmur3_32_encode, Murmur3_32_decode, []),
         CipherEntry("Adler32", Adler32_encode, Adler32_decode, []),
         CipherEntry("CRC16-CCITT", CRC16CCITT_encode, CRC16CCITT_decode, []),
         CipherEntry("Fletcher16", Fletcher16_encode, Fletcher16_decode, []),
@@ -9657,6 +10023,7 @@ def get_registry() -> List[CipherEntry]:
         CipherEntry("Conjugated Bifid", ConjugatedBifid_encode, ConjugatedBifid_decode, [P("plain_key","Plain key","PLAIN"), P("cipher_key","Cipher key","CIPHER"), P("period","Period","5")]),
         CipherEntry("Twin Bifid", TwinBifid_encode, TwinBifid_decode, [P("key1","Key 1","ALPHA"), P("key2","Key 2","OMEGA"), P("period","Period","5")]),
         CipherEntry("Trifid", Trifid_encode, Trifid_decode, [P("key","Key","KEYWORD"), P("period","Period","5")]),
+        CipherEntry("Trifid 4x4x4", Trifid4x4x4_encode, Trifid4x4x4_decode, [P("key","Key","Trifid"), P("period","Period","5")]),
         CipherEntry("Trifid Custom Alphabet", TrifidCustom_encode, TrifidCustom_decode, [P("alphabet","Alphabet","ABCDEFGHIJKLMNOPQRSTUVWXYZ."), P("period","Period","5")]),
         CipherEntry("Hill 2x2", Hill2x2_encode, Hill2x2_decode, [P("key","Matrix key","3,3,2,5")]),
         CipherEntry("Hill 3x3", Hill3x3_encode, Hill3x3_decode, [P("key","Matrix key","6,24,1,13,16,10,20,17,15")]),
@@ -9729,6 +10096,39 @@ def get_registry() -> List[CipherEntry]:
         CipherEntry("Semaphore", Semaphore_encode, Semaphore_decode, []),
     ]
     return reg
+
+
+def audit_registry() -> Dict[str, object]:
+    """Validate registry metadata and return a machine-readable report."""
+    registry = get_registry()
+    errors = []
+    warnings = []
+    seen_names = set()
+    for entry in registry:
+        if not entry.name.strip():
+            errors.append("registry entry has an empty name")
+        elif entry.name in seen_names:
+            errors.append(f"duplicate cipher name: {entry.name}")
+        seen_names.add(entry.name)
+        if not callable(entry.enc_fn):
+            errors.append(f"{entry.name}: encoder is not callable")
+        if not callable(entry.dec_fn):
+            errors.append(f"{entry.name}: decoder is not callable")
+        param_names = [param.name for param in entry.params]
+        if len(param_names) != len(set(param_names)):
+            errors.append(f"{entry.name}: duplicate parameter names")
+        for param in entry.params:
+            if not param.name.strip():
+                errors.append(f"{entry.name}: parameter has an empty name")
+            if param.default is None:
+                warnings.append(f"{entry.name}.{param.name}: default is None")
+    return {
+        "ok": not errors,
+        "cipher_count": len(registry),
+        "parameter_count": sum(len(entry.params) for entry in registry),
+        "errors": errors,
+        "warnings": warnings,
+    }
 
 # =============================================================================
 # Helpers: call by name with param dict
@@ -9843,6 +10243,29 @@ def cli_main(argv: List[str]) -> int:
     p_brute.add_argument("text")
     p_brute.add_argument("-f","--family", action="append", help="Family name (repeatable)", default=[])
 
+    sub.add_parser("audit", help="Validate cipher registry metadata")
+
+    p_rotor = sub.add_parser("rotor-crack", help="Search Enigma moving-rotor positions")
+    p_rotor.add_argument("text", help="Ciphertext")
+    p_rotor.add_argument("--rotors", default="I II III")
+    p_rotor.add_argument("--reflector", default="B")
+    p_rotor.add_argument("--ring", default="AAA")
+    p_rotor.add_argument("--plugboard", default="")
+    p_rotor.add_argument("--crib", default="")
+    p_rotor.add_argument("--max-results", type=int, default=10)
+    p_rotor.add_argument("--max-trials", type=int, default=17576)
+
+    p_hash_id = sub.add_parser("hash-identify", help="Suggest algorithms for a hexadecimal digest")
+    p_hash_id.add_argument("target")
+
+    p_hash_search = sub.add_parser("hash-search", help="Run a bounded finite-space preimage search")
+    p_hash_search.add_argument("target")
+    p_hash_search.add_argument("--algorithm", default="sha256")
+    p_hash_search.add_argument("--charset", default=string.ascii_lowercase)
+    p_hash_search.add_argument("--min-length", type=int, default=1)
+    p_hash_search.add_argument("--max-length", type=int, default=4)
+    p_hash_search.add_argument("--max-attempts", type=int, default=100000)
+
     if len(argv)==0:
         # no args: launch GUI if possible, else show help
         if tk is not None:
@@ -9880,6 +10303,27 @@ def cli_main(argv: List[str]) -> int:
             preview = pt[:80].replace("\n", " ")
             print(f"{i:2d}. {label:28} score={sc:8.2f} | {preview}")
         return 0
+    elif args.cmd == "audit":
+        report = audit_registry()
+        print(json.dumps(report, indent=2, ensure_ascii=False))
+        return 0 if report["ok"] else 1
+    elif args.cmd == "rotor-crack":
+        results = crack_enigma_positions(
+            args.text, args.rotors, args.reflector, args.ring, args.plugboard,
+            args.crib, args.max_results, args.max_trials,
+        )
+        print(json.dumps(results, indent=2, ensure_ascii=False))
+        return 0 if results else 1
+    elif args.cmd == "hash-identify":
+        print(json.dumps(identify_hash(args.target), indent=2))
+        return 0
+    elif args.cmd == "hash-search":
+        result = search_hash_preimage(
+            args.target, args.algorithm, args.charset, args.min_length,
+            args.max_length, args.max_attempts,
+        )
+        print(json.dumps(result, indent=2, ensure_ascii=False))
+        return 0 if result["found"] else 1
     else:
         parser.print_help()
         return 0
@@ -12651,12 +13095,26 @@ def _build_tests() -> List[TestCase]:
                            "hello world", {}, lambda s: s))
     T.append(_mk_roundtrip("Rotor", "Enigma I", EnigmaI_encode, EnigmaI_decode,
                            "ATTACKATDAWN", {"rotors": "I II III", "reflector": "B", "ring": "AAA", "setting": "ABC", "plugboard": "AV BS CG DL FU HZ IN KM OW RX"}, _norm_alpha))
+    T.append(_mk_roundtrip("Rotor", "Enigma M4", EnigmaM4_encode, EnigmaM4_decode,
+                           "SECRETMESSAGE", {"rotors": "Beta I II III", "reflector": "BThin", "ring": "AAAA", "setting": "QWER", "plugboard": "AV BS CG DL FU HZ IN KM OW RX"}, _norm_alpha))
     T.append(_mk_roundtrip("Rotor", "Typex", Typex_encode, Typex_decode,
                            "ATTACKATDAWN", {"rotors": "IV V II", "reflector": "C", "ring": "AAA", "setting": "BDF", "plugboard": ""}, _norm_alpha))
     T.append(_mk_roundtrip("Rotor", "SIGABA Toy", SIGABAToy_encode, SIGABAToy_decode,
                            "ATTACKATDAWN", {"key": "SIGABA", "control": "CONTROL"}, _norm_alpha))
     T.append(_mk_roundtrip("Rotor", "M-209", M209_encode, M209_decode,
                            "ATTACKATDAWN", {"key": "SECRET", "wheels": "26,25,23,21,19,17"}, _norm_alpha))
+    T.append(_mk_roundtrip("Field Code", "DRYAD Numeral", DRYADNumeral_encode, DRYADNumeral_decode,
+                           "Grid 1945-0830", {"keyword": "NIGHT", "row": "D", "sep": ""}, lambda s: s))
+    T.append(_mk_roundtrip("Field Code", "BATCO Simulator", BATCOFieldCode_encode, BATCOFieldCode_decode,
+                           "MOVE 2 UNITS!", {"keyword": "NIGHT", "indicator": "K", "sep": " "}, lambda s: s))
+    T.append(_mk_roundtrip("Polygraphic", "Trifid 4x4x4", Trifid4x4x4_encode, Trifid4x4x4_decode,
+                           "Sector7G", {"key": "Field", "period": 5}, lambda s: s))
+    T.append(_mk_roundtrip("Hash", "FNV-1a 32 wrapper", FNV1a32_encode, FNV1a32_decode,
+                           "hello world", {}, lambda s: s))
+    T.append(_mk_roundtrip("Hash", "MurmurHash3 32 wrapper", Murmur3_32_encode, Murmur3_32_decode,
+                           "hello world", {}, lambda s: s))
+    T.append(_mk_roundtrip("Checksum", "CRC32C wrapper", CRC32C_encode, CRC32C_decode,
+                           "123456789", {}, lambda s: s))
     return T
 
 # ---- runner -----------------------------------------------------------------

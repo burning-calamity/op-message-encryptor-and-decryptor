@@ -10,9 +10,13 @@ from .core import (
     Param,
     BruteForce,
     SmartGuess,
+    audit_registry,
     call_decode,
     call_encode,
+    crack_enigma_positions,
     get_registry,
+    identify_hash,
+    search_hash_preimage,
 )
 
 __version__ = "2.1.0"
@@ -58,4 +62,3 @@ def smart_guess(text: str):
 def brute_force(text: str, families: list[str] | None = None):
     """Return ranked brute-force candidates."""
     return BruteForce(text, families)
-
