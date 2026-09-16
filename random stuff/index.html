@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Loading video...</title>
+
+  <!-- Link preview / Discord / WhatsApp / Facebook / etc. -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="YouTube Audio" />
+  <meta property="og:description" content="Listen to this YouTube audio." />
+  <meta property="og:image" content="https://img.youtube.com/vi/AaIBMfdtR6M/maxresdefault.jpg" />
+  <meta property="og:url" content="https://youtu.be/AaIBMfdtR6M" />
+
+  <!-- Twitter / X preview -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="YouTube Audio" />
+  <meta name="twitter:description" content="Listen to this YouTube audio." />
+  <meta name="twitter:image" content="https://img.youtube.com/vi/AaIBMfdtR6M/maxresdefault.jpg" />
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: #111;
+      color: white;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    #player {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .box {
+      max-width: 600px;
+      padding: 20px;
+    }
+
+    img {
+      width: 100%;
+      max-width: 500px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+
+    button {
+      padding: 14px 24px;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: white;
+      color: black;
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="player"></div>
+
+  <div class="box">
+    <img src="https://img.youtube.com/vi/AaIBMfdtR6M/maxresdefault.jpg" alt="YouTube thumbnail">
+    <h1 id="videoTitle">Loading video...</h1>
+    <p id="status">Trying to play audio automatically...</p>
+    <button id="playButton">Click to play audio</button>
+  </div>
+
+  <script>
+    const videoId = "AaIBMfdtR6M";
+    const videoUrl = "https://www.youtube.com/watch?v=" + videoId;
+
+    let player;
+    let hasStarted = false;
+
+    // Get YouTube video title and set browser tab title
+    fetch("https://www.youtube.com/oembed?url=" + encodeURIComponent(videoUrl) + "&format=json")
+      .then(response => response.json())
+      .then(data => {
+        document.title = data.title;
+        document.getElementById("videoTitle").textContent = data.title;
+
+        // Update meta titles after page load
+        document.querySelector('meta[property="og:title"]').setAttribute("content", data.title);
+        document.querySelector('meta[name="twitter:title"]').setAttribute("content", data.title);
+      })
+      .catch(() => {
+        document.title = "YouTube Audio";
+        document.getElementById("videoTitle").textContent = "YouTube Audio";
+      });
+
+    // Load YouTube iframe API
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.body.appendChild(tag);
+
+    function onYouTubeIframeAPIReady() {
+      player = new YT.Player("player", {
+        videoId: videoId,
+        playerVars: {
+          autoplay: 1,
+          controls: 0,
+          loop: 1,
+          playlist: videoId,
+          modestbranding: 1
+        },
+        events: {
+          onReady: onPlayerReady,
+          onStateChange: onPlayerStateChange
+        }
+      });
+    }
+
+    function onPlayerReady(event) {
+      try {
+        event.target.unMute();
+        event.target.setVolume(100);
+        event.target.playVideo();
+      } catch (e) {
+        showPlayButton();
+      }
+
+      setTimeout(() => {
+        if (!hasStarted) {
+          showPlayButton();
+        }
+      }, 2000);
+    }
+
+    function onPlayerStateChange(event) {
+      if (event.data === YT.PlayerState.PLAYING) {
+        hasStarted = true;
+        document.getElementById("status").textContent = "Audio is playing.";
+        document.getElementById("playButton").style.display = "none";
+      }
+    }
+
+    function showPlayButton() {
+      document.getElementById("status").textContent =
+        "Your browser blocked autoplay with sound.";
+      document.getElementById("playButton").style.display = "inline-block";
+    }
+
+    document.getElementById("playButton").addEventListener("click", () => {
+      player.unMute();
+      player.setVolume(100);
+      player.playVideo();
+    });
+  </script>
+</body>
+</html>

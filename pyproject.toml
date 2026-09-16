@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ars-occultandarum-litterarum"
+version = "0.1.2"
+description = "Ars occultandarum litterarum: a message encryptor and decryptor toolkit with many cipher systems."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+authors = [
+  { name = "burning-calamity" }
+]
+keywords = ["cipher", "encryption", "decryption", "cryptography", "classical-ciphers"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Operating System :: OS Independent",
+]
+
+[project.scripts]
+ars-occultandarum-litterarum = "ars_occultandarum_litterarum.__main__:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["ars_occultandarum_litterarum*"]
