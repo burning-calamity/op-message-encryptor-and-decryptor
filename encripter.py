@@ -12636,96 +12636,28 @@ def _mk_decode_only(family, name, dec, ref_ct, exp_pt, params=None, norm=None):
     # piggy-back 'pt' to carry expected plaintext
     return TestCase(family, name, "decode_only", None, dec, params or {}, exp_pt, ref_ct, norm or _norm_words)
 
-# --- Test Bench primitives (put this above class CipherGUI) -------------------
-from dataclasses import dataclass, field
-from typing import Callable, Optional, Dict, List
-
-Normalizer = Optional[Callable[[str], str]]
-
-@dataclass
-class TestCase:
-    cipher: str
-    title: str
-    enc: Optional[Callable] = None
-    dec: Optional[Callable] = None
-    params: Dict[str, str] = field(default_factory=dict)
-    pt: Optional[str] = None
-    ct: Optional[str] = None
-    normalizer: Normalizer = None  # <-- default fixes the __new__ error
-
-def _norm_words(s: str) -> str:
-    s = "".join(ch if (ch.isalpha() or ch.isspace()) else " " for ch in s.upper())
-    return " ".join(s.split())
-
 def _build_tests() -> List[TestCase]:
+    """Build deterministic smoke tests for the GUI/CLI test bench."""
     T: List[TestCase] = []
-    # Simple sanity tests; add more as you like
-    pt = "THIS IS A SECRET"
-    ct = Caesar_encode(pt, 1, keep_others=True)
-    T.append(TestCase(
-        cipher="Caesar",
-        title="Caesar shift 1",
-        enc=Caesar_encode,
-        dec=Caesar_decode,
-        params={"shift": "1"},
-        pt=pt,
-        ct=ct,
-        normalizer=_norm_words
-    ))
+    T.append(_mk_roundtrip("Substitution", "Caesar shift 1", Caesar_encode, Caesar_decode,
+                           "THIS IS A SECRET", {"shift": 1}, _norm_words))
+    T.append(_mk_roundtrip("Substitution", "Atbash", Atbash_encode, Atbash_decode,
+                           "ATTACK AT DAWN", {}, _norm_words))
+    T.append(_mk_roundtrip("Polyalphabetic", "Vigenere", Vigenere_encode, Vigenere_decode,
+                           "ATTACKATDAWN", {"key": "LEMON"}, _norm_alpha))
+    T.append(_mk_roundtrip("Transposition", "Rail Fence", RailFence_encode, RailFence_decode,
+                           "WEAREDISCOVERED", {"rails": 3}, _norm_alpha))
+    T.append(_mk_roundtrip("Encoding", "Base64", Base64_encode, Base64_decode,
+                           "hello world", {}, lambda s: s))
+    T.append(_mk_roundtrip("Rotor", "Enigma I", EnigmaI_encode, EnigmaI_decode,
+                           "ATTACKATDAWN", {"rotors": "I II III", "reflector": "B", "ring": "AAA", "setting": "ABC", "plugboard": "AV BS CG DL FU HZ IN KM OW RX"}, _norm_alpha))
+    T.append(_mk_roundtrip("Rotor", "Typex", Typex_encode, Typex_decode,
+                           "ATTACKATDAWN", {"rotors": "IV V II", "reflector": "C", "ring": "AAA", "setting": "BDF", "plugboard": ""}, _norm_alpha))
+    T.append(_mk_roundtrip("Rotor", "SIGABA Toy", SIGABAToy_encode, SIGABAToy_decode,
+                           "ATTACKATDAWN", {"key": "SIGABA", "control": "CONTROL"}, _norm_alpha))
+    T.append(_mk_roundtrip("Rotor", "M-209", M209_encode, M209_decode,
+                           "ATTACKATDAWN", {"key": "SECRET", "wheels": "26,25,23,21,19,17"}, _norm_alpha))
     return T
-
-class TestBench(ttk.Frame):
-    def __init__(self, master):
-        super().__init__(master)
-        self.tests = _build_tests()
-        self.tree = ttk.Treeview(self, columns=("cipher","title","result"), show="headings")
-        self.tree.heading("cipher", text="Cipher"); self.tree.column("cipher", width=140, anchor="w")
-        self.tree.heading("title",  text="Title");  self.tree.column("title",  width=260, anchor="w")
-        self.tree.heading("result", text="Result"); self.tree.column("result", width=140, anchor="w")
-        self.tree.pack(fill="both", expand=True, padx=8, pady=8)
-
-        btns = ttk.Frame(self); btns.pack(fill="x", padx=8, pady=(0,8))
-        ttk.Button(btns, text="Run All", command=self.run_all).pack(side="left")
-        ttk.Button(btns, text="Close",   command=self.master.destroy).pack(side="right")
-
-        for tc in self.tests:
-            self.tree.insert("", "end", values=(tc.cipher, tc.title, "pending"))
-
-    def run_all(self):
-        for i, tc in enumerate(self.tests):
-            try:
-                # Prefer decode(ct) → pt check; fall back to encode(pt)
-                if tc.ct is not None and tc.dec is not None:
-                    got = call_decode(tc.cipher, tc.ct, tc.params)
-                    lhs = tc.normalizer(got) if tc.normalizer else got
-                    rhs = tc.normalizer(tc.pt) if (tc.pt and tc.normalizer) else (tc.pt or got)
-                    ok = (lhs == rhs)
-                elif tc.pt is not None and tc.enc is not None:
-                    got = call_encode(tc.cipher, tc.pt, tc.params)
-                    lhs = tc.normalizer(got) if tc.normalizer else got
-                    rhs = tc.normalizer(tc.ct) if (tc.ct and tc.normalizer) else (tc.ct or got)
-                    ok = (lhs == rhs)
-                else:
-                    ok = False
-                res = "PASS" if ok else "FAIL"
-            except Exception as e:
-                res = f"ERR: {e}"
-            item_id = self.tree.get_children()[i]
-            vals = list(self.tree.item(item_id, "values"))
-            vals[2] = res
-            self.tree.item(item_id, values=vals)
-
-# Hook into the GUI
-def _open_test_bench(self):
-    win = tk.Toplevel(self.root)
-    win.title("Test Bench")
-    win.geometry("620x360")
-    tb = TestBench(win)
-    tb.pack(fill="both", expand=True)
-
-# attach method to CipherGUI later in _build_menu patch
-
-
 
 # ---- runner -----------------------------------------------------------------
 class TestResult:
