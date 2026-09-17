@@ -5,6 +5,7 @@ ciphers and encodings.
 """
 from __future__ import annotations
 
+from ._version import __version__
 from .core import (
     CipherEntry,
     Param,
@@ -18,9 +19,6 @@ from .core import (
     identify_hash,
     search_hash_preimage,
 )
-
-__version__ = "2.1.0"
-
 
 def list_ciphers() -> list[str]:
     """Return all available cipher names."""

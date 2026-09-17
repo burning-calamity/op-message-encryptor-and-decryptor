@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ars-occultandarum-litterarum"
-version = "0.1.2"
+dynamic = ["version"]
 description = "Ars occultandarum litterarum: a message encryptor and decryptor toolkit with many cipher systems."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -24,3 +24,6 @@ ars-occultandarum-litterarum = "ars_occultandarum_litterarum.__main__:main"
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["ars_occultandarum_litterarum*"]
+
+[tool.setuptools.dynamic]
+version = {attr = "ars_occultandarum_litterarum._version.__version__"}
