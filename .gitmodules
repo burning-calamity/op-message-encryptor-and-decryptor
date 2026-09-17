@@ -1,0 +1,4 @@
+[submodule "openboard-encrypting"]
+	path = openboard-encrypting
+	url = https://github.com/burning-calamity/openboard-encrypting.git
+	branch = master

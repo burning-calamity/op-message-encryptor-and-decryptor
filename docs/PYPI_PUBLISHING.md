@@ -83,11 +83,15 @@ Then publish one of two ways:
 ### Tag publish
 
 ```bash
-git tag v0.1.2
-git push origin v0.1.2
+git tag v0.1.4
+git push origin v0.1.4
 ```
 
 The tag must match `v*.*.*`.
+
+On Windows, `publish_pypi_release.bat` performs the clean-branch check, tests,
+package build, duplicate-tag checks, and tag push. See
+[`GITHUB_PUBLISHING_WINDOWS.md`](GITHUB_PUBLISHING_WINDOWS.md).
 
 ## Why this workflow does not use a PyPI token
 

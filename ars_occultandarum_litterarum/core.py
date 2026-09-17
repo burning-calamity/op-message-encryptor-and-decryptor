@@ -31,6 +31,7 @@ import math
 import quopri
 import random
 import re
+import secrets
 import string
 import textwrap
 import unicodedata
@@ -39,9 +40,11 @@ import zlib
 from typing import List, Tuple, Dict, Iterable, Optional, Iterator
 
 # GUI & CLI come in Part 2
+TK_AVAILABLE = False
 try:
     import tkinter as tk
     from tkinter import ttk, messagebox
+    TK_AVAILABLE = True
 except Exception:
     class _MissingTkWidget:
         def __init__(self, *args, **kwargs):
@@ -7884,11 +7887,18 @@ def _nonce_bytes(nonce: str, size: int) -> bytes:
         return bytes.fromhex(raw)
     return hashlib.sha256((nonce or "nonce").encode("utf-8")).digest()[:size]
 
-def AESGCM_hex_encode(text: str, key: str = "secret", nonce: str = "nonce", aad: str = "") -> str:
+def _aead_encrypt_nonce(nonce: str, size: int = 12) -> bytes:
+    """Return a caller-supplied nonce, or a fresh nonce for automatic modes."""
+    raw = (nonce or "").strip()
+    if raw.casefold() in {"", "auto", "random", "nonce"}:
+        return secrets.token_bytes(size)
+    return _nonce_bytes(raw, size)
+
+def AESGCM_hex_encode(text: str, key: str = "secret", nonce: str = "", aad: str = "") -> str:
     if importlib.util.find_spec("cryptography") is None:
         return _cryptography_missing("AES-GCM")
     AESGCM = importlib.import_module("cryptography.hazmat.primitives.ciphers.aead").AESGCM
-    nonce_bytes = _nonce_bytes(nonce, 12)
+    nonce_bytes = _aead_encrypt_nonce(nonce)
     aad_bytes = (aad or "").encode("utf-8")
     cipher = AESGCM(_aead_key(key)).encrypt(nonce_bytes, text.encode("utf-8"), aad_bytes)
     meta = {"nonce": nonce_bytes.hex(), "aad": aad}
@@ -7987,11 +7997,11 @@ def AESCTR_hex_decode(text: str, key: str = "secret", nonce: str = "nonce") -> s
     dec = _aes_cipher(key, modes.CTR(_nonce_bytes(str(nonce), 16))).decryptor()
     return (dec.update(bytes.fromhex(body)) + dec.finalize()).decode("utf-8")
 
-def ChaCha20Poly1305_hex_encode(text: str, key: str = "secret", nonce: str = "nonce", aad: str = "") -> str:
+def ChaCha20Poly1305_hex_encode(text: str, key: str = "secret", nonce: str = "", aad: str = "") -> str:
     if importlib.util.find_spec("cryptography") is None:
         return _cryptography_missing("ChaCha20-Poly1305")
     ChaCha20Poly1305 = importlib.import_module("cryptography.hazmat.primitives.ciphers.aead").ChaCha20Poly1305
-    nonce_bytes = _nonce_bytes(nonce, 12)
+    nonce_bytes = _aead_encrypt_nonce(nonce)
     aad_bytes = (aad or "").encode("utf-8")
     cipher = ChaCha20Poly1305(_aead_key(key, (32,))).encrypt(nonce_bytes, text.encode("utf-8"), aad_bytes)
     meta = {"nonce": nonce_bytes.hex(), "aad": aad}
@@ -10065,11 +10075,11 @@ def get_registry() -> List[CipherEntry]:
         CipherEntry("RC4 (hex)", RC4_hex_encode, RC4_hex_decode, [P("key","Key","secret")]),
         CipherEntry("Solitaire", Solitaire_encode, Solitaire_decode, [P("key","Key","CRYPTONOMICON")]),
         CipherEntry("ChaCha20 (hex)", ChaCha20_hex_encode, ChaCha20_hex_decode, [P("key","Key","secret"), P("nonce","Nonce","000000000000000000000000"), P("counter","Counter","1")]),
-        CipherEntry("AES-GCM (hex)", AESGCM_hex_encode, AESGCM_hex_decode, [P("key","Key/hex key","secret"), P("nonce","Nonce/hex nonce","nonce"), P("aad","AAD","")]),
+        CipherEntry("AES-GCM (hex)", AESGCM_hex_encode, AESGCM_hex_decode, [P("key","Key/hex key","secret"), P("nonce","Nonce/hex nonce (blank=random)",""), P("aad","AAD","")]),
         CipherEntry("AES-ECB (hex)", AESECB_hex_encode, AESECB_hex_decode, [P("key","Key/hex key","secret")]),
         CipherEntry("AES-CBC (hex)", AESCBC_hex_encode, AESCBC_hex_decode, [P("key","Key/hex key","secret"), P("iv","IV/hex IV","iv")]),
         CipherEntry("AES-CTR (hex)", AESCTR_hex_encode, AESCTR_hex_decode, [P("key","Key/hex key","secret"), P("nonce","Nonce/hex nonce","nonce")]),
-        CipherEntry("ChaCha20-Poly1305 (hex)", ChaCha20Poly1305_hex_encode, ChaCha20Poly1305_hex_decode, [P("key","Key/hex key","secret"), P("nonce","Nonce/hex nonce","nonce"), P("aad","AAD","")]),
+        CipherEntry("ChaCha20-Poly1305 (hex)", ChaCha20Poly1305_hex_encode, ChaCha20Poly1305_hex_decode, [P("key","Key/hex key","secret"), P("nonce","Nonce/hex nonce (blank=random)",""), P("aad","AAD","")]),
         CipherEntry("Fernet Token", FernetToken_encode, FernetToken_decode, [P("password","Password","secret")]),
         CipherEntry("ChaCha12 (hex)", ChaCha12_hex_encode, ChaCha12_hex_decode, [P("key","Key","secret"), P("nonce","Nonce","000000000000000000000000"), P("counter","Counter","1")]),
         CipherEntry("ChaCha8 (hex)", ChaCha8_hex_encode, ChaCha8_hex_decode, [P("key","Key","secret"), P("nonce","Nonce","000000000000000000000000"), P("counter","Counter","1")]),
@@ -10268,7 +10278,7 @@ def cli_main(argv: List[str]) -> int:
 
     if len(argv)==0:
         # no args: launch GUI if possible, else show help
-        if tk is not None:
+        if TK_AVAILABLE:
             launch_gui()
             return 0
         parser.print_help()
@@ -13357,7 +13367,7 @@ if __name__ == "__main__":
         sys.exit(cli_main(sys.argv[1:]))
     else:
         try:
-            if tk is not None:
+            if TK_AVAILABLE:
                 launch_gui()
             else:
                 # Fallback: print list

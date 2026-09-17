@@ -1,5 +1,11 @@
+import importlib.util
+import json
+
+
 def test_import():
-    import ars_occultandarum_litterarum
+    import ars_occultandarum_litterarum as package
+
+    assert package.__version__ == "0.1.4"
 
 
 def test_new_field_ciphers_round_trip():
@@ -82,3 +88,42 @@ def test_hash_identification_and_bounded_search():
     result = core.search_hash_preimage(target, "sha256", "abc", 3, 3, 27)
     assert result["found"] is True
     assert result["candidate"] == "cab"
+
+
+def test_aead_automatic_nonces_are_unique_and_embedded():
+    if importlib.util.find_spec("cryptography") is None:
+        return
+
+    from ars_occultandarum_litterarum import core
+
+    for encode, decode, marker in (
+        (core.AESGCM_hex_encode, core.AESGCM_hex_decode, "[AESGCM]"),
+        (
+            core.ChaCha20Poly1305_hex_encode,
+            core.ChaCha20Poly1305_hex_decode,
+            "[CHACHA20POLY1305]",
+        ),
+    ):
+        first = encode("repeatable message", key="test key")
+        second = encode("repeatable message", key="test key")
+        first_meta = json.loads(first[len(marker):].split("|", 1)[0])
+        second_meta = json.loads(second[len(marker):].split("|", 1)[0])
+
+        assert first != second
+        assert first_meta["nonce"] != second_meta["nonce"]
+        assert len(bytes.fromhex(first_meta["nonce"])) == 12
+        assert decode(first, key="test key") == "repeatable message"
+        assert decode(second, key="test key") == "repeatable message"
+
+
+def test_cli_without_tkinter_prints_help(monkeypatch, capsys):
+    from ars_occultandarum_litterarum import core
+
+    monkeypatch.setattr(core, "TK_AVAILABLE", False)
+
+    def unexpected_gui_launch():
+        raise AssertionError("headless CLI attempted to launch Tkinter")
+
+    monkeypatch.setattr(core, "launch_gui", unexpected_gui_launch)
+    assert core.cli_main([]) == 0
+    assert "usage: encripter" in capsys.readouterr().out
