@@ -1,11 +1,40 @@
 import importlib.util
+import base64
 import json
+import re
+from pathlib import Path
 
 
 def test_import():
     import ars_occultandarum_litterarum as package
 
     assert package.__version__ == "0.1.4"
+
+
+def test_cipher_engine_copies_are_synchronized():
+    from ars_occultandarum_litterarum import core
+
+    root = Path(__file__).resolve().parents[1]
+    source = (root / "encripter.py").read_bytes()
+
+    assert (root / "ars_occultandarum_litterarum" / "core.py").read_bytes() == source
+    assert (root / "apk" / "v1" / "encripter.py").read_bytes() == source
+
+    html = (root / "index.html").read_bytes()
+    match = re.search(rb'const PY_B64 = "([A-Za-z0-9+/=]+)";', html)
+    assert match is not None
+    assert base64.b64decode(match.group(1)) == source
+
+    manifest = json.loads((root / "ciphers_manifest.json").read_text(encoding="utf-8"))
+    registry = core.get_registry()
+    assert [entry["name"] for entry in manifest] == [entry.name for entry in registry]
+    assert [
+        [(parameter["name"], parameter["default"]) for parameter in entry["parameters"]]
+        for entry in manifest
+    ] == [
+        [(parameter.name, str(parameter.default)) for parameter in entry.params]
+        for entry in registry
+    ]
 
 
 def test_new_field_ciphers_round_trip():
@@ -127,3 +156,52 @@ def test_cli_without_tkinter_prints_help(monkeypatch, capsys):
     monkeypatch.setattr(core, "launch_gui", unexpected_gui_launch)
     assert core.cli_main([]) == 0
     assert "usage: encripter" in capsys.readouterr().out
+
+
+def test_tools_menu_test_bench_callback(monkeypatch):
+    from ars_occultandarum_litterarum import core
+
+    commands = []
+
+    class FakeMenu:
+        def __init__(self, *_args, **_kwargs):
+            pass
+
+        def add_command(self, **kwargs):
+            commands.append(kwargs)
+
+        def add_separator(self):
+            pass
+
+        def add_cascade(self, **_kwargs):
+            pass
+
+    class FakeRoot:
+        def __getitem__(self, _key):
+            return "menu"
+
+        def nametowidget(self, _name):
+            return FakeMenu()
+
+    opened = []
+    fake_gui = type(
+        "FakeGUI",
+        (),
+        {
+            "root": FakeRoot(),
+            "open_freq_window": lambda self: None,
+            "open_kasiski_window": lambda self: None,
+            "open_scoring_window": lambda self: None,
+            "open_test_bench": lambda self: opened.append(True),
+        },
+    )()
+
+    monkeypatch.setattr(core.tk, "Menu", FakeMenu)
+    core._install_tools_menu(fake_gui)
+    test_bench_command = next(
+        command["command"]
+        for command in commands
+        if command.get("label") == "Test Bench…"
+    )
+    test_bench_command()
+    assert opened == [True]

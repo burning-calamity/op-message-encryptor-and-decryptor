@@ -18,11 +18,17 @@ if [[ ! -f "$OPENBOARD_DIR/gradlew" ]]; then
 fi
 
 echo "== Python syntax and tests =="
-python -m compileall -q \
-    "$ROOT_DIR/encripter.py" \
-    "$ROOT_DIR/ars_occultandarum_litterarum" \
-    "$ROOT_DIR/apk/v1/encripter.py" \
-    "$ROOT_DIR/tests"
+python "$ROOT_DIR/scripts/sync_cipher_engines.py" --check
+mapfile -d '' python_files < <(git -C "$ROOT_DIR" ls-files -z -- '*.py')
+if [[ ${#python_files[@]} -eq 0 ]]; then
+    echo "No tracked Python files were found." >&2
+    exit 1
+fi
+for index in "${!python_files[@]}"; do
+    python_files[index]="$ROOT_DIR/${python_files[index]}"
+done
+python -m py_compile "${python_files[@]}"
+ruff check --select E9,F821 "${python_files[@]}"
 (cd "$ROOT_DIR" && python -m pytest -q)
 
 echo "== OpenBoard script syntax =="
@@ -36,7 +42,7 @@ javac -Xlint:all -d "$classes_dir" \
 
 if [[ "$RUN_ANDROID_BUILD" == true ]]; then
     echo "== OpenBoard Android build and lint =="
-    (cd "$OPENBOARD_DIR" && ./gradlew --no-daemon assembleDebug lint)
+    (cd "$OPENBOARD_DIR" && bash ./gradlew --no-daemon assembleDebug lint)
 else
     echo "Skipping the Android SDK build; pass --android to enable it."
 fi

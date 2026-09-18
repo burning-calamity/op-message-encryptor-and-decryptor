@@ -3,6 +3,11 @@ setlocal EnableExtensions DisableDelayedExpansion
 
 rem This pushes a version tag to GitHub. The tag starts the trusted PyPI workflow.
 cd /d "%~dp0"
+set "BRANCH="
+set "DIRTY="
+set "VERSION="
+set "TAG="
+set "CONFIRM="
 
 where git >nul 2>&1 || (
     echo ERROR: Git is not installed or is not available on PATH.

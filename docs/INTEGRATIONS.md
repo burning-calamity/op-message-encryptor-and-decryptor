@@ -31,3 +31,22 @@ Integrated pieces:
 The search feature does not mathematically reverse cryptographic hashes. It
 only compares candidates from the caller-provided finite character and length
 space, and enforces a maximum attempt count.
+
+## Keeping cipher frontends synchronized
+
+`encripter.py` is the canonical Python cipher engine. The package core, Kivy
+APK engine, and browser's base64-embedded Pyodide engine must contain those
+same implementations and registry entries.
+
+After changing a cipher, run:
+
+```bash
+python scripts/sync_cipher_engines.py
+```
+
+Windows Command Prompt users can run `sync_cipher_engines.bat` instead.
+
+CI runs the command with `--check` and fails if any frontend is stale. The
+OpenBoard Java keyboard and AutoHotkey keyboard remain independent native
+frontends because they use different languages and platform-specific APIs;
+their supported subsets are validated by their own build checks.
