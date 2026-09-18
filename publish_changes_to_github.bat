@@ -3,6 +3,9 @@ setlocal EnableExtensions DisableDelayedExpansion
 
 rem Run from the repository root even when launched from File Explorer.
 cd /d "%~dp0"
+set "REMOTE_URL="
+set "BRANCH="
+set "COMMIT_MESSAGE="
 
 where git >nul 2>&1 || (
     echo ERROR: Git is not installed or is not available on PATH.
@@ -35,6 +38,11 @@ echo Branch:     %BRANCH%
 echo.
 
 git submodule update --init --recursive || exit /b 1
+
+if exist scripts\sync_cipher_engines.py (
+    echo Synchronizing cipher engine copies...
+    python scripts\sync_cipher_engines.py || exit /b 1
+)
 
 if exist tests\test_basic.py (
     echo Running Python tests before publishing...

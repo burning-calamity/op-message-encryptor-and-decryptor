@@ -11018,7 +11018,7 @@ def _install_tools_menu(self):
     tools.add_command(label="Scoring Weights… (Ctrl+T)", command=self.open_scoring_window)
     # NEW:
     tools.add_separator()
-    tools.add_command(label="Test Bench…", command=lambda: _open_test_bench(self))
+    tools.add_command(label="Test Bench…", command=self.open_test_bench)
     m.add_cascade(label="Tools", menu=tools)
 
 
@@ -11330,10 +11330,7 @@ COMMON_WORDS = [
 ]
 
 # --- If an earlier _score_pt exists, keep a reference --------------------------------
-try:
-    _old_score_pt = _score_pt
-except Exception:
-    _old_score_pt = None
+_old_score_pt = globals().get("_score_pt")
 
 def _chi2_score(pt_alpha: str) -> float:
     if not pt_alpha: return -1e9

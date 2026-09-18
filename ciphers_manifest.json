@@ -1,0 +1,3766 @@
+[
+  {
+    "name": "Caesar",
+    "parameters": [
+      {
+        "name": "shift",
+        "label": "Shift",
+        "default": "3",
+        "tip": "Integer"
+      }
+    ]
+  },
+  {
+    "name": "ROT13",
+    "parameters": []
+  },
+  {
+    "name": "ROT5",
+    "parameters": []
+  },
+  {
+    "name": "ROT18",
+    "parameters": []
+  },
+  {
+    "name": "ROT47",
+    "parameters": []
+  },
+  {
+    "name": "Atbash",
+    "parameters": []
+  },
+  {
+    "name": "Affine",
+    "parameters": [
+      {
+        "name": "a",
+        "label": "a",
+        "default": "5",
+        "tip": ""
+      },
+      {
+        "name": "b",
+        "label": "b",
+        "default": "8",
+        "tip": ""
+      },
+      {
+        "name": "m",
+        "label": "mod",
+        "default": "26",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Keyword Shift",
+    "parameters": [
+      {
+        "name": "keyword",
+        "label": "Keyword",
+        "default": "CIPHER",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Keyword Substitution",
+    "parameters": [
+      {
+        "name": "keyword",
+        "label": "Keyword",
+        "default": "CIPHER",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Caesar Custom Alphabet",
+    "parameters": [
+      {
+        "name": "shift",
+        "label": "Shift",
+        "default": "3",
+        "tip": ""
+      },
+      {
+        "name": "alphabet",
+        "label": "Alphabet",
+        "default": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Caesar Progressive",
+    "parameters": [
+      {
+        "name": "start",
+        "label": "Start",
+        "default": "0",
+        "tip": ""
+      },
+      {
+        "name": "step",
+        "label": "Step",
+        "default": "1",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Keyed Caesar",
+    "parameters": [
+      {
+        "name": "keyword",
+        "label": "Keyword",
+        "default": "CIPHER",
+        "tip": ""
+      },
+      {
+        "name": "shift",
+        "label": "Shift",
+        "default": "3",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Dvorak Keyboard",
+    "parameters": []
+  },
+  {
+    "name": "Kamasutra",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Pair alphabet",
+        "default": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Trithemius",
+    "parameters": [
+      {
+        "name": "start",
+        "label": "Start",
+        "default": "0",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Variant Beaufort",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "FORT",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Word Caesar",
+    "parameters": [
+      {
+        "name": "shift",
+        "label": "Shift",
+        "default": "1",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Latin Reverse Custom",
+    "parameters": [
+      {
+        "name": "alphabet",
+        "label": "Alphabet",
+        "default": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Keyed Alphabet Arbitrary",
+    "parameters": [
+      {
+        "name": "source",
+        "label": "Source alphabet",
+        "default": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+        "tip": ""
+      },
+      {
+        "name": "target",
+        "label": "Target alphabet",
+        "default": "QWERTYUIOPASDFGHJKLZXCVBNM",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Keyed Caesar Progressive",
+    "parameters": [
+      {
+        "name": "keyword",
+        "label": "Keyword",
+        "default": "CIPHER",
+        "tip": ""
+      },
+      {
+        "name": "start",
+        "label": "Start",
+        "default": "0",
+        "tip": ""
+      },
+      {
+        "name": "step",
+        "label": "Step",
+        "default": "1",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Word Substitution",
+    "parameters": [
+      {
+        "name": "mapping",
+        "label": "Mapping",
+        "default": "hello=hola,world=mundo",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Codebook Substitution",
+    "parameters": [
+      {
+        "name": "codebook",
+        "label": "Codebook",
+        "default": "attack=17,dawn=42",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Book Cipher",
+    "parameters": [
+      {
+        "name": "book",
+        "label": "Book text",
+        "default": "alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima mike november oscar papa quebec romeo sierra tango uniform victor whiskey xray yankee zulu",
+        "tip": ""
+      },
+      {
+        "name": "sep",
+        "label": "Fallback separator",
+        "default": "-",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Dictionary Code",
+    "parameters": [
+      {
+        "name": "dictionary",
+        "label": "Dictionary text",
+        "default": "alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima mike november oscar papa quebec romeo sierra tango uniform victor whiskey xray yankee zulu",
+        "tip": ""
+      },
+      {
+        "name": "sep",
+        "label": "Index separator",
+        "default": ".",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Page-Line-Word-Letter",
+    "parameters": [
+      {
+        "name": "book",
+        "label": "Book text",
+        "default": "alpha bravo charlie delta echo foxtrot golf hotel india juliet kilo lima mike november oscar papa quebec romeo sierra tango uniform victor whiskey xray yankee zulu",
+        "tip": ""
+      },
+      {
+        "name": "sep",
+        "label": "Index separator",
+        "default": ".",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Homophonic Substitution",
+    "parameters": []
+  },
+  {
+    "name": "Headline Puzzle",
+    "parameters": [
+      {
+        "name": "filler_word",
+        "label": "Filler word",
+        "default": "headline",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Della Porta Disk",
+    "parameters": [
+      {
+        "name": "keyword",
+        "label": "Disk keyword",
+        "default": "CIPHER",
+        "tip": ""
+      },
+      {
+        "name": "shift",
+        "label": "Shift",
+        "default": "0",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Wolseley Disk",
+    "parameters": [
+      {
+        "name": "keyword",
+        "label": "Disk keyword",
+        "default": "WOLSELEY",
+        "tip": ""
+      },
+      {
+        "name": "shift",
+        "label": "Shift",
+        "default": "0",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Dorabella",
+    "parameters": [
+      {
+        "name": "sep",
+        "label": "Separator",
+        "default": " ",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Gold-Bug",
+    "parameters": [
+      {
+        "name": "sep",
+        "label": "Separator",
+        "default": " ",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Dancing Men Tokenized",
+    "parameters": [
+      {
+        "name": "sep",
+        "label": "Separator",
+        "default": " ",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Mary Queen of Scots Nomenclator",
+    "parameters": [
+      {
+        "name": "sep",
+        "label": "Separator",
+        "default": " ",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "DRYAD Numeral Simulator",
+    "parameters": [
+      {
+        "name": "keyword",
+        "label": "Daily key",
+        "default": "DRYAD",
+        "tip": ""
+      },
+      {
+        "name": "row",
+        "label": "Row indicator",
+        "default": "A",
+        "tip": ""
+      },
+      {
+        "name": "sep",
+        "label": "Separator",
+        "default": "",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "BATCO Field Code Simulator",
+    "parameters": [
+      {
+        "name": "keyword",
+        "label": "Daily key",
+        "default": "BATCO",
+        "tip": ""
+      },
+      {
+        "name": "indicator",
+        "label": "Message indicator",
+        "default": "A",
+        "tip": ""
+      },
+      {
+        "name": "sep",
+        "label": "Separator",
+        "default": " ",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "SLIDEX",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Grid key",
+        "default": "SLIDEX",
+        "tip": ""
+      },
+      {
+        "name": "row_labels",
+        "label": "Row labels",
+        "default": "12345",
+        "tip": ""
+      },
+      {
+        "name": "col_labels",
+        "label": "Column labels",
+        "default": "12345",
+        "tip": ""
+      },
+      {
+        "name": "sep",
+        "label": "Separator",
+        "default": " ",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Alberti Disk",
+    "parameters": [
+      {
+        "name": "outer",
+        "label": "Outer alphabet",
+        "default": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+        "tip": ""
+      },
+      {
+        "name": "inner_key",
+        "label": "Inner key",
+        "default": "CIPHER",
+        "tip": ""
+      },
+      {
+        "name": "period",
+        "label": "Period",
+        "default": "5",
+        "tip": ""
+      },
+      {
+        "name": "step",
+        "label": "Step",
+        "default": "1",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Wheatstone Cryptograph",
+    "parameters": [
+      {
+        "name": "keyword",
+        "label": "Keyword",
+        "default": "WHEATSTONE",
+        "tip": ""
+      },
+      {
+        "name": "indicator",
+        "label": "Indicator",
+        "default": "A",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Condi",
+    "parameters": [
+      {
+        "name": "keyword",
+        "label": "Keyword",
+        "default": "CIPHER",
+        "tip": ""
+      },
+      {
+        "name": "start",
+        "label": "Start",
+        "default": "0",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Ragbaby",
+    "parameters": [
+      {
+        "name": "keyword",
+        "label": "Keyword",
+        "default": "RAGBABY",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Straddling Checkerboard",
+    "parameters": [
+      {
+        "name": "keyword",
+        "label": "Keyword",
+        "default": "ETAOINSHRDLCUMWFGYPBVKJXQZ",
+        "tip": ""
+      },
+      {
+        "name": "rowdigits",
+        "label": "Row digits",
+        "default": "3,7",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Monome-Dinome",
+    "parameters": [
+      {
+        "name": "keyword",
+        "label": "Keyword",
+        "default": "ETAOINSHRDLCUMWFGYPBVKJXQZ",
+        "tip": ""
+      },
+      {
+        "name": "rowdigits",
+        "label": "Row digits",
+        "default": "2,6",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Chaocipher",
+    "parameters": [
+      {
+        "name": "left",
+        "label": "Left alphabet",
+        "default": "HXUCZVAMDSLKPEFJRIGTWOBNYQ",
+        "tip": ""
+      },
+      {
+        "name": "right",
+        "label": "Right alphabet",
+        "default": "PTLNBQDEOYSFAVZKGJRIHWXUMC",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Nicodemus",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Transposition key",
+        "default": "NICODEMUS",
+        "tip": ""
+      },
+      {
+        "name": "vigenere_key",
+        "label": "Vigenere key",
+        "default": "KEY",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Phillips",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Square key",
+        "default": "PHILLIPS",
+        "tip": ""
+      },
+      {
+        "name": "period",
+        "label": "Period",
+        "default": "5",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Slidefair",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "SLIDE",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Redefence",
+    "parameters": [
+      {
+        "name": "rails",
+        "label": "Rails",
+        "default": "3",
+        "tip": ""
+      },
+      {
+        "name": "offset",
+        "label": "Offset",
+        "default": "1",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Checkerboard Transposition",
+    "parameters": [
+      {
+        "name": "rows",
+        "label": "Rows",
+        "default": "5",
+        "tip": ""
+      },
+      {
+        "name": "cols",
+        "label": "Cols",
+        "default": "5",
+        "tip": ""
+      },
+      {
+        "name": "pad",
+        "label": "Pad",
+        "default": "X",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Jefferson Disk",
+    "parameters": [
+      {
+        "name": "offset",
+        "label": "Offset",
+        "default": "6",
+        "tip": ""
+      },
+      {
+        "name": "disks",
+        "label": "Disks (blank/default, comma shifts, or ; alphabets)",
+        "default": "",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Seriated Playfair",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "KEYWORD",
+        "tip": ""
+      },
+      {
+        "name": "period",
+        "label": "Period",
+        "default": "5",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Tri-Square",
+    "parameters": [
+      {
+        "name": "key1",
+        "label": "Key 1",
+        "default": "ALPHA",
+        "tip": ""
+      },
+      {
+        "name": "key2",
+        "label": "Key 2",
+        "default": "BRAVO",
+        "tip": ""
+      },
+      {
+        "name": "key3",
+        "label": "Key 3",
+        "default": "CHARLIE",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Cadenus",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "CADENUS",
+        "tip": ""
+      },
+      {
+        "name": "height",
+        "label": "Height",
+        "default": "25",
+        "tip": ""
+      },
+      {
+        "name": "pad",
+        "label": "Pad",
+        "default": "X",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Clave",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "CLAVE",
+        "tip": ""
+      },
+      {
+        "name": "alphabet_key",
+        "label": "Alphabet key",
+        "default": "CIPHER",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Phillips RC",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Square key",
+        "default": "PHILLIPS",
+        "tip": ""
+      },
+      {
+        "name": "period",
+        "label": "Period",
+        "default": "5",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Swagman",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Permutation key",
+        "default": "3142",
+        "tip": ""
+      },
+      {
+        "name": "pad",
+        "label": "Pad",
+        "default": "X",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Alternating Columnar",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "CIPHER",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Boustrophedon Route",
+    "parameters": [
+      {
+        "name": "rows",
+        "label": "Rows",
+        "default": "5",
+        "tip": ""
+      },
+      {
+        "name": "cols",
+        "label": "Cols",
+        "default": "5",
+        "tip": ""
+      },
+      {
+        "name": "pad",
+        "label": "Pad",
+        "default": "X",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Cistercian Numerals",
+    "parameters": []
+  },
+  {
+    "name": "Lorenz Toy",
+    "parameters": [
+      {
+        "name": "seed",
+        "label": "Seed",
+        "default": "LORENZ",
+        "tip": ""
+      },
+      {
+        "name": "wheels",
+        "label": "Wheel periods",
+        "default": "41,31,29,26,23",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Complete Columnar",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "CIPHER",
+        "tip": ""
+      },
+      {
+        "name": "pad",
+        "label": "Pad",
+        "default": "X",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Columnar Padded",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "CIPHER",
+        "tip": ""
+      },
+      {
+        "name": "pad",
+        "label": "Pad",
+        "default": "X",
+        "tip": ""
+      },
+      {
+        "name": "policy",
+        "label": "Policy",
+        "default": "minimal",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Keyphrase Transposition",
+    "parameters": [
+      {
+        "name": "keyphrase",
+        "label": "Keyphrase",
+        "default": "THE QUICK BROWN FOX",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Spiral Inward Route",
+    "parameters": [
+      {
+        "name": "rows",
+        "label": "Rows",
+        "default": "5",
+        "tip": ""
+      },
+      {
+        "name": "cols",
+        "label": "Cols",
+        "default": "5",
+        "tip": ""
+      },
+      {
+        "name": "pad",
+        "label": "Pad",
+        "default": "X",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Spiral Outward Route",
+    "parameters": [
+      {
+        "name": "rows",
+        "label": "Rows",
+        "default": "5",
+        "tip": ""
+      },
+      {
+        "name": "cols",
+        "label": "Cols",
+        "default": "5",
+        "tip": ""
+      },
+      {
+        "name": "pad",
+        "label": "Pad",
+        "default": "X",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Reading Order Route",
+    "parameters": [
+      {
+        "name": "rows",
+        "label": "Rows",
+        "default": "5",
+        "tip": ""
+      },
+      {
+        "name": "cols",
+        "label": "Cols",
+        "default": "5",
+        "tip": ""
+      },
+      {
+        "name": "preset",
+        "label": "Preset",
+        "default": "column",
+        "tip": ""
+      },
+      {
+        "name": "pad",
+        "label": "Pad",
+        "default": "X",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Rotating Square Route",
+    "parameters": [
+      {
+        "name": "size",
+        "label": "Size",
+        "default": "5",
+        "tip": ""
+      },
+      {
+        "name": "turns",
+        "label": "Turns",
+        "default": "1",
+        "tip": ""
+      },
+      {
+        "name": "pad",
+        "label": "Pad",
+        "default": "X",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Grille Mask",
+    "parameters": [
+      {
+        "name": "rows",
+        "label": "Rows",
+        "default": "5",
+        "tip": ""
+      },
+      {
+        "name": "cols",
+        "label": "Cols",
+        "default": "5",
+        "tip": ""
+      },
+      {
+        "name": "mask",
+        "label": "Mask",
+        "default": "1000001000001000001000001",
+        "tip": ""
+      },
+      {
+        "name": "pad",
+        "label": "Pad",
+        "default": "X",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Cardan Grille",
+    "parameters": [
+      {
+        "name": "rows",
+        "label": "Rows",
+        "default": "5",
+        "tip": ""
+      },
+      {
+        "name": "cols",
+        "label": "Cols",
+        "default": "5",
+        "tip": ""
+      },
+      {
+        "name": "mask",
+        "label": "Mask",
+        "default": "1000001000001000001000001",
+        "tip": ""
+      },
+      {
+        "name": "cover",
+        "label": "Cover text",
+        "default": "",
+        "tip": ""
+      },
+      {
+        "name": "pad",
+        "label": "Pad",
+        "default": "X",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Fleissner Grille",
+    "parameters": [
+      {
+        "name": "size",
+        "label": "Size",
+        "default": "4",
+        "tip": ""
+      },
+      {
+        "name": "mask",
+        "label": "Mask",
+        "default": "1100110000000000",
+        "tip": ""
+      },
+      {
+        "name": "pad",
+        "label": "Pad",
+        "default": "X",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Turning Cardan Grille",
+    "parameters": [
+      {
+        "name": "size",
+        "label": "Size",
+        "default": "4",
+        "tip": ""
+      },
+      {
+        "name": "mask",
+        "label": "Mask",
+        "default": "1100110000000000",
+        "tip": ""
+      },
+      {
+        "name": "pad",
+        "label": "Pad",
+        "default": "X",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Raster Bits",
+    "parameters": [
+      {
+        "name": "width",
+        "label": "Width",
+        "default": "8",
+        "tip": ""
+      },
+      {
+        "name": "on",
+        "label": "On char",
+        "default": "#",
+        "tip": ""
+      },
+      {
+        "name": "off",
+        "label": "Off char",
+        "default": ".",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Hagelin Toy",
+    "parameters": [
+      {
+        "name": "seed",
+        "label": "Seed",
+        "default": "HAGELIN",
+        "tip": ""
+      },
+      {
+        "name": "wheels",
+        "label": "Wheels",
+        "default": "17,19,21,23,25,26",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Enigma I",
+    "parameters": [
+      {
+        "name": "rotors",
+        "label": "Rotors",
+        "default": "I II III",
+        "tip": ""
+      },
+      {
+        "name": "reflector",
+        "label": "Reflector",
+        "default": "B",
+        "tip": ""
+      },
+      {
+        "name": "ring",
+        "label": "Ring setting",
+        "default": "AAA",
+        "tip": ""
+      },
+      {
+        "name": "setting",
+        "label": "Message setting",
+        "default": "AAA",
+        "tip": ""
+      },
+      {
+        "name": "plugboard",
+        "label": "Plugboard pairs",
+        "default": "",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Enigma M4",
+    "parameters": [
+      {
+        "name": "rotors",
+        "label": "Rotors",
+        "default": "Beta I II III",
+        "tip": ""
+      },
+      {
+        "name": "reflector",
+        "label": "Thin reflector",
+        "default": "BThin",
+        "tip": ""
+      },
+      {
+        "name": "ring",
+        "label": "Ring setting",
+        "default": "AAAA",
+        "tip": ""
+      },
+      {
+        "name": "setting",
+        "label": "Message setting",
+        "default": "AAAA",
+        "tip": ""
+      },
+      {
+        "name": "plugboard",
+        "label": "Plugboard pairs",
+        "default": "",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "M-209",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "M209",
+        "tip": ""
+      },
+      {
+        "name": "wheels",
+        "label": "Wheel periods",
+        "default": "26,25,23,21,19,17",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Typex",
+    "parameters": [
+      {
+        "name": "rotors",
+        "label": "Rotors",
+        "default": "IV V II",
+        "tip": ""
+      },
+      {
+        "name": "reflector",
+        "label": "Reflector",
+        "default": "C",
+        "tip": ""
+      },
+      {
+        "name": "ring",
+        "label": "Ring setting",
+        "default": "AAA",
+        "tip": ""
+      },
+      {
+        "name": "setting",
+        "label": "Message setting",
+        "default": "AAA",
+        "tip": ""
+      },
+      {
+        "name": "plugboard",
+        "label": "Plugboard pairs",
+        "default": "",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "SIGABA Toy",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "SIGABA",
+        "tip": ""
+      },
+      {
+        "name": "control",
+        "label": "Control key",
+        "default": "CONTROL",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "AMSCO",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "CIPHER",
+        "tip": ""
+      },
+      {
+        "name": "start_len",
+        "label": "Starting cell length",
+        "default": "1",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Bazeries",
+    "parameters": [
+      {
+        "name": "number",
+        "label": "Number key",
+        "default": "31415",
+        "tip": ""
+      },
+      {
+        "name": "key",
+        "label": "Alphabet key",
+        "default": "BAZERIES",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Disrupted Transposition",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "DISRUPT",
+        "tip": ""
+      },
+      {
+        "name": "pad",
+        "label": "Pad",
+        "default": "X",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Incomplete Columnar",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "CIPHER",
+        "tip": ""
+      },
+      {
+        "name": "keep_spaces",
+        "label": "Keep spaces",
+        "default": "false",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Double Columnar Irregular",
+    "parameters": [
+      {
+        "name": "key1",
+        "label": "Key 1",
+        "default": "ALPHA",
+        "tip": ""
+      },
+      {
+        "name": "key2",
+        "label": "Key 2",
+        "default": "OMEGA",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Scytale Padded",
+    "parameters": [
+      {
+        "name": "diameter",
+        "label": "Diameter",
+        "default": "5",
+        "tip": ""
+      },
+      {
+        "name": "pad",
+        "label": "Pad",
+        "default": "X",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Gromark",
+    "parameters": [
+      {
+        "name": "primer",
+        "label": "Primer digits",
+        "default": "12345",
+        "tip": ""
+      },
+      {
+        "name": "key",
+        "label": "Alphabet key",
+        "default": "GROMARK",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Nihilist Substitution",
+    "parameters": [
+      {
+        "name": "square_key",
+        "label": "Square key",
+        "default": "NIHILIST",
+        "tip": ""
+      },
+      {
+        "name": "key",
+        "label": "Additive key",
+        "default": "KEY",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Vigenere",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "LEMON",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Chiffre Indechiffrable",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "VIGENERE",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Vigenere Custom Alphabet",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "LEMON",
+        "tip": ""
+      },
+      {
+        "name": "alphabet",
+        "label": "Alphabet",
+        "default": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Vigenere Progressive",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "LEMON",
+        "tip": ""
+      },
+      {
+        "name": "step",
+        "label": "Step",
+        "default": "1",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Autokey",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "QUEENLY",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Beaufort",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "FORT",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Gronsfeld",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Digits",
+        "default": "314159",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Porta (historic)",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "PORTA",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Porta (table)",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "PORTA",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Running Key",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "THENEVERENDINGSTORY",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Running Key Book",
+    "parameters": [
+      {
+        "name": "book",
+        "label": "Book text",
+        "default": "THENEVERENDINGSTORY",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Interrupted Key",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "CIPHER",
+        "tip": ""
+      },
+      {
+        "name": "period",
+        "label": "Period",
+        "default": "5",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Progressive Key",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "LEMON",
+        "tip": ""
+      },
+      {
+        "name": "increment",
+        "label": "Increment",
+        "default": "1",
+        "tip": ""
+      },
+      {
+        "name": "group",
+        "label": "Group",
+        "default": "5",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Beaufort Autokey",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "FORT",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Variant Beaufort Autokey",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "FORT",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "OTP (letters)",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "XMCKL",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Backslang",
+    "parameters": []
+  },
+  {
+    "name": "Rövarspråket",
+    "parameters": []
+  },
+  {
+    "name": "Tutnese",
+    "parameters": []
+  },
+  {
+    "name": "Leet Speak",
+    "parameters": []
+  },
+  {
+    "name": "Keyboard Substitution",
+    "parameters": []
+  },
+  {
+    "name": "Keyboard Reversed",
+    "parameters": []
+  },
+  {
+    "name": "Keyboard Coordinates",
+    "parameters": [
+      {
+        "name": "sep",
+        "label": "Separator",
+        "default": ".",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "QWERTY Adjacent",
+    "parameters": [
+      {
+        "name": "direction",
+        "label": "Direction",
+        "default": "right",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Chessboard Coordinates",
+    "parameters": []
+  },
+  {
+    "name": "A1Z26",
+    "parameters": []
+  },
+  {
+    "name": "NATO Phonetic",
+    "parameters": []
+  },
+  {
+    "name": "Multi-Tap Phone",
+    "parameters": []
+  },
+  {
+    "name": "T9 Keypad",
+    "parameters": []
+  },
+  {
+    "name": "Vanity Phone",
+    "parameters": [
+      {
+        "name": "keep_punctuation",
+        "label": "Keep punctuation",
+        "default": "true",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Tap Code",
+    "parameters": []
+  },
+  {
+    "name": "Braille Unicode",
+    "parameters": []
+  },
+  {
+    "name": "Braille Grade 1",
+    "parameters": []
+  },
+  {
+    "name": "APCO Phonetic",
+    "parameters": []
+  },
+  {
+    "name": "Baudot ITA2",
+    "parameters": []
+  },
+  {
+    "name": "Murray Code",
+    "parameters": []
+  },
+  {
+    "name": "Semaphore Arms",
+    "parameters": []
+  },
+  {
+    "name": "Pigpen Unicode",
+    "parameters": []
+  },
+  {
+    "name": "Upside-down Text",
+    "parameters": []
+  },
+  {
+    "name": "Mirror Text",
+    "parameters": []
+  },
+  {
+    "name": "Zero-width Binary",
+    "parameters": []
+  },
+  {
+    "name": "Bacon Biliteral",
+    "parameters": [
+      {
+        "name": "a_char",
+        "label": "A character",
+        "default": "A",
+        "tip": ""
+      },
+      {
+        "name": "b_char",
+        "label": "B character",
+        "default": "B",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Whitespace Binary",
+    "parameters": []
+  },
+  {
+    "name": "Snow Steg",
+    "parameters": [
+      {
+        "name": "cover",
+        "label": "Cover text",
+        "default": "snow",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Elder Futhark",
+    "parameters": []
+  },
+  {
+    "name": "Younger Futhark",
+    "parameters": []
+  },
+  {
+    "name": "Ogham",
+    "parameters": []
+  },
+  {
+    "name": "Maritime Signal Flags",
+    "parameters": []
+  },
+  {
+    "name": "International Code Signals",
+    "parameters": []
+  },
+  {
+    "name": "Cirth",
+    "parameters": []
+  },
+  {
+    "name": "Tengwar Tokens",
+    "parameters": []
+  },
+  {
+    "name": "Zodiac Symbols",
+    "parameters": []
+  },
+  {
+    "name": "Wingdings Tokens",
+    "parameters": []
+  },
+  {
+    "name": "Aurebesh",
+    "parameters": []
+  },
+  {
+    "name": "Theban",
+    "parameters": []
+  },
+  {
+    "name": "Standard Galactic",
+    "parameters": []
+  },
+  {
+    "name": "Dancing Men",
+    "parameters": []
+  },
+  {
+    "name": "Moon Type",
+    "parameters": []
+  },
+  {
+    "name": "Calculator Spelling",
+    "parameters": []
+  },
+  {
+    "name": "Zalgo",
+    "parameters": [
+      {
+        "name": "intensity",
+        "label": "Intensity",
+        "default": "2",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Invisible Unicode",
+    "parameters": [
+      {
+        "name": "cover",
+        "label": "Cover text",
+        "default": "",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Null Acrostic",
+    "parameters": []
+  },
+  {
+    "name": "Acrostic Generator",
+    "parameters": [
+      {
+        "name": "filler_word",
+        "label": "Filler word",
+        "default": "cover",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Every Nth Hider",
+    "parameters": [
+      {
+        "name": "n",
+        "label": "N",
+        "default": "3",
+        "tip": ""
+      },
+      {
+        "name": "filler",
+        "label": "Filler",
+        "default": "x",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Solresol",
+    "parameters": []
+  },
+  {
+    "name": "Music Notes",
+    "parameters": []
+  },
+  {
+    "name": "Binary",
+    "parameters": []
+  },
+  {
+    "name": "Octal",
+    "parameters": []
+  },
+  {
+    "name": "Hex",
+    "parameters": []
+  },
+  {
+    "name": "Base32",
+    "parameters": []
+  },
+  {
+    "name": "Base16 with separators",
+    "parameters": [
+      {
+        "name": "sep",
+        "label": "Separator",
+        "default": " ",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Base32hex",
+    "parameters": []
+  },
+  {
+    "name": "Base64URL",
+    "parameters": []
+  },
+  {
+    "name": "Base92",
+    "parameters": []
+  },
+  {
+    "name": "yEnc",
+    "parameters": []
+  },
+  {
+    "name": "Base32 Crockford",
+    "parameters": []
+  },
+  {
+    "name": "Base36",
+    "parameters": []
+  },
+  {
+    "name": "Base45",
+    "parameters": []
+  },
+  {
+    "name": "Base58",
+    "parameters": []
+  },
+  {
+    "name": "Base62",
+    "parameters": []
+  },
+  {
+    "name": "Base91",
+    "parameters": []
+  },
+  {
+    "name": "Z85",
+    "parameters": []
+  },
+  {
+    "name": "RFC1924 Base85",
+    "parameters": []
+  },
+  {
+    "name": "Base64",
+    "parameters": []
+  },
+  {
+    "name": "Ascii85 (a85)",
+    "parameters": []
+  },
+  {
+    "name": "Base85 (b85)",
+    "parameters": []
+  },
+  {
+    "name": "Base3 (ternary)",
+    "parameters": []
+  },
+  {
+    "name": "Base9",
+    "parameters": []
+  },
+  {
+    "name": "URL",
+    "parameters": []
+  },
+  {
+    "name": "HTML Entities",
+    "parameters": []
+  },
+  {
+    "name": "Quoted-Printable",
+    "parameters": []
+  },
+  {
+    "name": "Punycode",
+    "parameters": []
+  },
+  {
+    "name": "Gray Code",
+    "parameters": []
+  },
+  {
+    "name": "uuencode",
+    "parameters": []
+  },
+  {
+    "name": "xxencode",
+    "parameters": []
+  },
+  {
+    "name": "Netstring",
+    "parameters": []
+  },
+  {
+    "name": "Bencode String",
+    "parameters": []
+  },
+  {
+    "name": "MessagePack Hex",
+    "parameters": []
+  },
+  {
+    "name": "PEM Armor",
+    "parameters": [
+      {
+        "name": "label",
+        "label": "Label",
+        "default": "MESSAGE",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "OpenPGP Armor",
+    "parameters": [
+      {
+        "name": "label",
+        "label": "Label",
+        "default": "MESSAGE",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Intel HEX",
+    "parameters": [
+      {
+        "name": "bytes_per_record",
+        "label": "Bytes/record",
+        "default": "16",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Motorola S-Record",
+    "parameters": [
+      {
+        "name": "bytes_per_record",
+        "label": "Bytes/record",
+        "default": "16",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Base100 Emoji",
+    "parameters": []
+  },
+  {
+    "name": "Parity Bits",
+    "parameters": []
+  },
+  {
+    "name": "Hex Color",
+    "parameters": []
+  },
+  {
+    "name": "RLE",
+    "parameters": []
+  },
+  {
+    "name": "Burrows-Wheeler",
+    "parameters": []
+  },
+  {
+    "name": "Move-to-front",
+    "parameters": []
+  },
+  {
+    "name": "Zlib Base64",
+    "parameters": [
+      {
+        "name": "level",
+        "label": "Level",
+        "default": "9",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Gzip Base64",
+    "parameters": [
+      {
+        "name": "level",
+        "label": "Level",
+        "default": "9",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Binary Endian Words",
+    "parameters": [
+      {
+        "name": "word_bytes",
+        "label": "Word bytes",
+        "default": "2",
+        "tip": ""
+      },
+      {
+        "name": "endian",
+        "label": "Endian",
+        "default": "big",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "C String Escapes",
+    "parameters": []
+  },
+  {
+    "name": "Hamming(7,4)",
+    "parameters": []
+  },
+  {
+    "name": "Luhn Check",
+    "parameters": []
+  },
+  {
+    "name": "JSON String Escapes",
+    "parameters": []
+  },
+  {
+    "name": "Octal Escapes",
+    "parameters": []
+  },
+  {
+    "name": "Hexdump",
+    "parameters": []
+  },
+  {
+    "name": "Data URI",
+    "parameters": [
+      {
+        "name": "mime",
+        "label": "MIME",
+        "default": "text/plain;charset=utf-8",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "URL Form",
+    "parameters": []
+  },
+  {
+    "name": "CRC32",
+    "parameters": []
+  },
+  {
+    "name": "CRC32C",
+    "parameters": []
+  },
+  {
+    "name": "FNV-1a 32",
+    "parameters": []
+  },
+  {
+    "name": "MurmurHash3 32",
+    "parameters": []
+  },
+  {
+    "name": "Adler32",
+    "parameters": []
+  },
+  {
+    "name": "CRC16-CCITT",
+    "parameters": []
+  },
+  {
+    "name": "Fletcher16",
+    "parameters": []
+  },
+  {
+    "name": "Fletcher32",
+    "parameters": []
+  },
+  {
+    "name": "Verhoeff Check",
+    "parameters": []
+  },
+  {
+    "name": "Damm Check",
+    "parameters": []
+  },
+  {
+    "name": "Elias Gamma",
+    "parameters": []
+  },
+  {
+    "name": "Fibonacci Code",
+    "parameters": []
+  },
+  {
+    "name": "Hamming(15,11)",
+    "parameters": []
+  },
+  {
+    "name": "LEB128",
+    "parameters": []
+  },
+  {
+    "name": "Elias Delta",
+    "parameters": []
+  },
+  {
+    "name": "Golomb",
+    "parameters": [
+      {
+        "name": "m",
+        "label": "Divisor m",
+        "default": "10",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "CRC8",
+    "parameters": []
+  },
+  {
+    "name": "CRC64-ECMA",
+    "parameters": []
+  },
+  {
+    "name": "MD5",
+    "parameters": []
+  },
+  {
+    "name": "SHA1",
+    "parameters": []
+  },
+  {
+    "name": "SHA256",
+    "parameters": []
+  },
+  {
+    "name": "SHA3-256",
+    "parameters": []
+  },
+  {
+    "name": "HMAC",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "secret",
+        "tip": ""
+      },
+      {
+        "name": "algorithm",
+        "label": "Algorithm",
+        "default": "sha256",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "PBKDF2",
+    "parameters": [
+      {
+        "name": "salt",
+        "label": "Salt",
+        "default": "salt",
+        "tip": ""
+      },
+      {
+        "name": "iterations",
+        "label": "Iterations",
+        "default": "100000",
+        "tip": ""
+      },
+      {
+        "name": "algorithm",
+        "label": "Algorithm",
+        "default": "sha256",
+        "tip": ""
+      },
+      {
+        "name": "dklen",
+        "label": "Bytes",
+        "default": "32",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "BLAKE2b",
+    "parameters": []
+  },
+  {
+    "name": "BLAKE2s",
+    "parameters": []
+  },
+  {
+    "name": "scrypt",
+    "parameters": [
+      {
+        "name": "salt",
+        "label": "Salt",
+        "default": "salt",
+        "tip": ""
+      },
+      {
+        "name": "n",
+        "label": "N",
+        "default": "16384",
+        "tip": ""
+      },
+      {
+        "name": "r",
+        "label": "r",
+        "default": "8",
+        "tip": ""
+      },
+      {
+        "name": "p",
+        "label": "p",
+        "default": "1",
+        "tip": ""
+      },
+      {
+        "name": "dklen",
+        "label": "Bytes",
+        "default": "32",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "HKDF",
+    "parameters": [
+      {
+        "name": "salt",
+        "label": "Salt",
+        "default": "salt",
+        "tip": ""
+      },
+      {
+        "name": "info",
+        "label": "Info",
+        "default": "",
+        "tip": ""
+      },
+      {
+        "name": "algorithm",
+        "label": "Algorithm",
+        "default": "sha256",
+        "tip": ""
+      },
+      {
+        "name": "length",
+        "label": "Bytes",
+        "default": "32",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "HOTP",
+    "parameters": [
+      {
+        "name": "secret",
+        "label": "Secret",
+        "default": "secret",
+        "tip": ""
+      },
+      {
+        "name": "counter",
+        "label": "Counter",
+        "default": "0",
+        "tip": ""
+      },
+      {
+        "name": "digits",
+        "label": "Digits",
+        "default": "6",
+        "tip": ""
+      },
+      {
+        "name": "algorithm",
+        "label": "Algorithm",
+        "default": "sha1",
+        "tip": ""
+      },
+      {
+        "name": "base32_secret",
+        "label": "Base32 secret",
+        "default": "false",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "TOTP",
+    "parameters": [
+      {
+        "name": "secret",
+        "label": "Secret",
+        "default": "secret",
+        "tip": ""
+      },
+      {
+        "name": "time_step",
+        "label": "Time step",
+        "default": "30",
+        "tip": ""
+      },
+      {
+        "name": "digits",
+        "label": "Digits",
+        "default": "6",
+        "tip": ""
+      },
+      {
+        "name": "algorithm",
+        "label": "Algorithm",
+        "default": "sha1",
+        "tip": ""
+      },
+      {
+        "name": "for_time",
+        "label": "Unix time (0=now)",
+        "default": "0",
+        "tip": ""
+      },
+      {
+        "name": "base32_secret",
+        "label": "Base32 secret",
+        "default": "false",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Unicode \\u Escapes",
+    "parameters": []
+  },
+  {
+    "name": "ASCII Shift (hex)",
+    "parameters": [
+      {
+        "name": "shift",
+        "label": "Shift",
+        "default": "1",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "DNA Encoding",
+    "parameters": []
+  },
+  {
+    "name": "DNA Codons",
+    "parameters": []
+  },
+  {
+    "name": "RNA Codons",
+    "parameters": []
+  },
+  {
+    "name": "Amino Acid 1/3",
+    "parameters": []
+  },
+  {
+    "name": "I Ching Hexagrams",
+    "parameters": []
+  },
+  {
+    "name": "Tarot Cards",
+    "parameters": []
+  },
+  {
+    "name": "Polybius",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "KEYWORD",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Polybius Custom Labels",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "KEYWORD",
+        "tip": ""
+      },
+      {
+        "name": "row_labels",
+        "label": "Row labels",
+        "default": "12345",
+        "tip": ""
+      },
+      {
+        "name": "col_labels",
+        "label": "Column labels",
+        "default": "12345",
+        "tip": ""
+      },
+      {
+        "name": "sep",
+        "label": "Separator",
+        "default": " ",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Polybius Columnar",
+    "parameters": [
+      {
+        "name": "square_key",
+        "label": "Square key",
+        "default": "KEYWORD",
+        "tip": ""
+      },
+      {
+        "name": "route_key",
+        "label": "Route key",
+        "default": "CIPHER",
+        "tip": ""
+      },
+      {
+        "name": "row_labels",
+        "label": "Row labels",
+        "default": "12345",
+        "tip": ""
+      },
+      {
+        "name": "col_labels",
+        "label": "Column labels",
+        "default": "12345",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Playfair",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "KEYWORD",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Playfair Q Omitted",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "KEYWORD",
+        "tip": ""
+      },
+      {
+        "name": "filler",
+        "label": "Filler",
+        "default": "X",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Playfair Preserve",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "KEYWORD",
+        "tip": ""
+      },
+      {
+        "name": "filler",
+        "label": "Filler",
+        "default": "X",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Playfair Padding",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "KEYWORD",
+        "tip": ""
+      },
+      {
+        "name": "filler",
+        "label": "Filler",
+        "default": "X",
+        "tip": ""
+      },
+      {
+        "name": "omit",
+        "label": "Omit letter",
+        "default": "J",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Double Playfair",
+    "parameters": [
+      {
+        "name": "key1",
+        "label": "Key 1",
+        "default": "ALPHA",
+        "tip": ""
+      },
+      {
+        "name": "key2",
+        "label": "Key 2",
+        "default": "OMEGA",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Four-Square",
+    "parameters": [
+      {
+        "name": "key1",
+        "label": "Key 1",
+        "default": "EXAMPLE",
+        "tip": ""
+      },
+      {
+        "name": "key2",
+        "label": "Key 2",
+        "default": "KEYWORD",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Two-Square",
+    "parameters": [
+      {
+        "name": "key1",
+        "label": "Key L",
+        "default": "EXAMPLE",
+        "tip": ""
+      },
+      {
+        "name": "key2",
+        "label": "Key R",
+        "default": "KEYWORD",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Two-Square Vertical",
+    "parameters": [
+      {
+        "name": "key_top",
+        "label": "Top key",
+        "default": "EXAMPLE",
+        "tip": ""
+      },
+      {
+        "name": "key_bottom",
+        "label": "Bottom key",
+        "default": "KEYWORD",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Columnar",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "CIPHER",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Myszkowski",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "TOMATO",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Caesar Box",
+    "parameters": [
+      {
+        "name": "cols",
+        "label": "Cols",
+        "default": "4",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Scytale",
+    "parameters": [
+      {
+        "name": "diameter",
+        "label": "Diameter",
+        "default": "5",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Double Transposition",
+    "parameters": [
+      {
+        "name": "key1",
+        "label": "Key 1",
+        "default": "EXAMPLE",
+        "tip": ""
+      },
+      {
+        "name": "key2",
+        "label": "Key 2",
+        "default": "KEYWORD",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Route Cipher",
+    "parameters": [
+      {
+        "name": "rows",
+        "label": "Rows",
+        "default": "5",
+        "tip": ""
+      },
+      {
+        "name": "cols",
+        "label": "Cols",
+        "default": "5",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Bifid",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "KEYWORD",
+        "tip": ""
+      },
+      {
+        "name": "period",
+        "label": "Period",
+        "default": "5",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Bifid No Period",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "KEYWORD",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Conjugated Bifid",
+    "parameters": [
+      {
+        "name": "plain_key",
+        "label": "Plain key",
+        "default": "PLAIN",
+        "tip": ""
+      },
+      {
+        "name": "cipher_key",
+        "label": "Cipher key",
+        "default": "CIPHER",
+        "tip": ""
+      },
+      {
+        "name": "period",
+        "label": "Period",
+        "default": "5",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Twin Bifid",
+    "parameters": [
+      {
+        "name": "key1",
+        "label": "Key 1",
+        "default": "ALPHA",
+        "tip": ""
+      },
+      {
+        "name": "key2",
+        "label": "Key 2",
+        "default": "OMEGA",
+        "tip": ""
+      },
+      {
+        "name": "period",
+        "label": "Period",
+        "default": "5",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Trifid",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "KEYWORD",
+        "tip": ""
+      },
+      {
+        "name": "period",
+        "label": "Period",
+        "default": "5",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Trifid 4x4x4",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "Trifid",
+        "tip": ""
+      },
+      {
+        "name": "period",
+        "label": "Period",
+        "default": "5",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Trifid Custom Alphabet",
+    "parameters": [
+      {
+        "name": "alphabet",
+        "label": "Alphabet",
+        "default": "ABCDEFGHIJKLMNOPQRSTUVWXYZ.",
+        "tip": ""
+      },
+      {
+        "name": "period",
+        "label": "Period",
+        "default": "5",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Hill 2x2",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Matrix key",
+        "default": "3,3,2,5",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Hill 3x3",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Matrix key",
+        "default": "6,24,1,13,16,10,20,17,15",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Hill NxN",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Matrix key",
+        "default": "6,24,1,13,16,10,20,17,15",
+        "tip": ""
+      },
+      {
+        "name": "size",
+        "label": "Size",
+        "default": "3",
+        "tip": ""
+      },
+      {
+        "name": "alphabet",
+        "label": "Alphabet",
+        "default": "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Playfair 6x6",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "KEYWORD",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Four-Square 6x6",
+    "parameters": [
+      {
+        "name": "key1",
+        "label": "Key 1",
+        "default": "EXAMPLE",
+        "tip": ""
+      },
+      {
+        "name": "key2",
+        "label": "Key 2",
+        "default": "KEYWORD",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Two-Square 6x6",
+    "parameters": [
+      {
+        "name": "key1",
+        "label": "Key L",
+        "default": "EXAMPLE",
+        "tip": ""
+      },
+      {
+        "name": "key2",
+        "label": "Key R",
+        "default": "KEYWORD",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Bifid 6x6",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "KEYWORD",
+        "tip": ""
+      },
+      {
+        "name": "period",
+        "label": "Period",
+        "default": "5",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "ADFGX",
+    "parameters": [
+      {
+        "name": "square_key",
+        "label": "Square Key",
+        "default": "KEYWORD",
+        "tip": ""
+      },
+      {
+        "name": "route_key",
+        "label": "Route Key",
+        "default": "CIPHER",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "ADFGX Custom Labels",
+    "parameters": [
+      {
+        "name": "square_key",
+        "label": "Square Key",
+        "default": "KEYWORD",
+        "tip": ""
+      },
+      {
+        "name": "route_key",
+        "label": "Route Key",
+        "default": "CIPHER",
+        "tip": ""
+      },
+      {
+        "name": "labels",
+        "label": "Labels",
+        "default": "ADFGX",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "ADFGVX",
+    "parameters": [
+      {
+        "name": "square_key",
+        "label": "Square Key",
+        "default": "KEYW0RD",
+        "tip": ""
+      },
+      {
+        "name": "route_key",
+        "label": "Route Key",
+        "default": "CIPHER",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "ADFGVX Escaped",
+    "parameters": [
+      {
+        "name": "square_key",
+        "label": "Square Key",
+        "default": "KEYW0RD",
+        "tip": ""
+      },
+      {
+        "name": "route_key",
+        "label": "Route Key",
+        "default": "CIPHER",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Morse",
+    "parameters": []
+  },
+  {
+    "name": "Knock Code",
+    "parameters": []
+  },
+  {
+    "name": "Morbit",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Digit key",
+        "default": "123456789",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Pollux",
+    "parameters": []
+  },
+  {
+    "name": "Pigpen",
+    "parameters": []
+  },
+  {
+    "name": "Quagmire I",
+    "parameters": [
+      {
+        "name": "runkey",
+        "label": "Run-key",
+        "default": "QUEENLY",
+        "tip": ""
+      },
+      {
+        "name": "cipher_key",
+        "label": "Cipher-key",
+        "default": "CIPHER",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Quagmire II",
+    "parameters": [
+      {
+        "name": "runkey",
+        "label": "Run-key",
+        "default": "QUEENLY",
+        "tip": ""
+      },
+      {
+        "name": "plain_key",
+        "label": "Plain-key",
+        "default": "PLAIN",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Quagmire III",
+    "parameters": [
+      {
+        "name": "runkey",
+        "label": "Run-key",
+        "default": "QUEENLY",
+        "tip": ""
+      },
+      {
+        "name": "plain_key",
+        "label": "Plain-key",
+        "default": "PLAIN",
+        "tip": ""
+      },
+      {
+        "name": "cipher_key",
+        "label": "Cipher-key",
+        "default": "CIPHER",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Quagmire IV",
+    "parameters": [
+      {
+        "name": "runkey",
+        "label": "Run-key",
+        "default": "QUEENLY",
+        "tip": ""
+      },
+      {
+        "name": "indicator",
+        "label": "Indicator",
+        "default": "INDICATOR",
+        "tip": ""
+      },
+      {
+        "name": "plain_key",
+        "label": "Plain-key",
+        "default": "PLAIN",
+        "tip": ""
+      },
+      {
+        "name": "cipher_key",
+        "label": "Cipher-key",
+        "default": "CIPHER",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Quagmire V",
+    "parameters": [
+      {
+        "name": "runkey",
+        "label": "Run-key",
+        "default": "QUEENLY",
+        "tip": ""
+      },
+      {
+        "name": "plain_key",
+        "label": "Plain-key",
+        "default": "PLAIN",
+        "tip": ""
+      },
+      {
+        "name": "cipher_key",
+        "label": "Cipher-key",
+        "default": "CIPHER",
+        "tip": ""
+      },
+      {
+        "name": "plain_indicator",
+        "label": "Plain indicator",
+        "default": "A",
+        "tip": ""
+      },
+      {
+        "name": "cipher_indicator",
+        "label": "Cipher indicator",
+        "default": "A",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Quagmire VI",
+    "parameters": [
+      {
+        "name": "runkey",
+        "label": "Run-key",
+        "default": "QUEENLY",
+        "tip": ""
+      },
+      {
+        "name": "plain_key",
+        "label": "Plain-key",
+        "default": "PLAIN",
+        "tip": ""
+      },
+      {
+        "name": "cipher_key",
+        "label": "Cipher-key",
+        "default": "CIPHER",
+        "tip": ""
+      },
+      {
+        "name": "indicator",
+        "label": "Indicator",
+        "default": "A",
+        "tip": ""
+      },
+      {
+        "name": "step",
+        "label": "Step",
+        "default": "1",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Baconian",
+    "parameters": []
+  },
+  {
+    "name": "Grandpré",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "GRANDPRE",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Nihilist",
+    "parameters": [
+      {
+        "name": "alpha_key",
+        "label": "Alpha-key",
+        "default": "CIPHER",
+        "tip": ""
+      },
+      {
+        "name": "num_key",
+        "label": "Num-key",
+        "default": "KEY",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Homophonic",
+    "parameters": [
+      {
+        "name": "seed",
+        "label": "Seed",
+        "default": "SEED",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Fractionated Morse",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "KEYABCDFGHIJLMNOPQRSTUVWXZ",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "RC4 (hex)",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "secret",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Solitaire",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "CRYPTONOMICON",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "ChaCha20 (hex)",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "secret",
+        "tip": ""
+      },
+      {
+        "name": "nonce",
+        "label": "Nonce",
+        "default": "000000000000000000000000",
+        "tip": ""
+      },
+      {
+        "name": "counter",
+        "label": "Counter",
+        "default": "1",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "AES-GCM (hex)",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key/hex key",
+        "default": "secret",
+        "tip": ""
+      },
+      {
+        "name": "nonce",
+        "label": "Nonce/hex nonce (blank=random)",
+        "default": "",
+        "tip": ""
+      },
+      {
+        "name": "aad",
+        "label": "AAD",
+        "default": "",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "AES-ECB (hex)",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key/hex key",
+        "default": "secret",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "AES-CBC (hex)",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key/hex key",
+        "default": "secret",
+        "tip": ""
+      },
+      {
+        "name": "iv",
+        "label": "IV/hex IV",
+        "default": "iv",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "AES-CTR (hex)",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key/hex key",
+        "default": "secret",
+        "tip": ""
+      },
+      {
+        "name": "nonce",
+        "label": "Nonce/hex nonce",
+        "default": "nonce",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "ChaCha20-Poly1305 (hex)",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key/hex key",
+        "default": "secret",
+        "tip": ""
+      },
+      {
+        "name": "nonce",
+        "label": "Nonce/hex nonce (blank=random)",
+        "default": "",
+        "tip": ""
+      },
+      {
+        "name": "aad",
+        "label": "AAD",
+        "default": "",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Fernet Token",
+    "parameters": [
+      {
+        "name": "password",
+        "label": "Password",
+        "default": "secret",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "ChaCha12 (hex)",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "secret",
+        "tip": ""
+      },
+      {
+        "name": "nonce",
+        "label": "Nonce",
+        "default": "000000000000000000000000",
+        "tip": ""
+      },
+      {
+        "name": "counter",
+        "label": "Counter",
+        "default": "1",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "ChaCha8 (hex)",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "secret",
+        "tip": ""
+      },
+      {
+        "name": "nonce",
+        "label": "Nonce",
+        "default": "000000000000000000000000",
+        "tip": ""
+      },
+      {
+        "name": "counter",
+        "label": "Counter",
+        "default": "1",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Salsa20 (hex)",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "secret",
+        "tip": ""
+      },
+      {
+        "name": "nonce",
+        "label": "Nonce",
+        "default": "0000000000000000",
+        "tip": ""
+      },
+      {
+        "name": "counter",
+        "label": "Counter",
+        "default": "0",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "XXTEA (hex)",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "secret",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Speck32/64 (hex)",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "secret",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Simon32/64 (hex)",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "secret",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "TEA (hex)",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "secret",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "XTEA (hex)",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "secret",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "RC5-32/12/16 (hex)",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "secret",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Emoji Substitution",
+    "parameters": [
+      {
+        "name": "seed",
+        "label": "Seed",
+        "default": "EMOJI",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Whitespace Encoding",
+    "parameters": []
+  },
+  {
+    "name": "SCB Encode",
+    "parameters": [
+      {
+        "name": "keyword",
+        "label": "Keyword",
+        "default": "ETAOINSHRDLCUMWFGYPBVKJXQZ",
+        "tip": ""
+      },
+      {
+        "name": "rowdigits",
+        "label": "RowDigits",
+        "default": "3,7",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Rail Fence",
+    "parameters": [
+      {
+        "name": "rails",
+        "label": "Rails",
+        "default": "3",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Rail Fence Offset",
+    "parameters": [
+      {
+        "name": "rails",
+        "label": "Rails",
+        "default": "3",
+        "tip": ""
+      },
+      {
+        "name": "offset",
+        "label": "Offset",
+        "default": "1",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Rail Fence Spaces",
+    "parameters": [
+      {
+        "name": "rails",
+        "label": "Rails",
+        "default": "3",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Skip Permutation",
+    "parameters": [
+      {
+        "name": "step",
+        "label": "Step",
+        "default": "3",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Spiral Route",
+    "parameters": [
+      {
+        "name": "rows",
+        "label": "Rows",
+        "default": "5",
+        "tip": ""
+      },
+      {
+        "name": "cols",
+        "label": "Cols",
+        "default": "5",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Vertical Transposition",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Numeric key",
+        "default": "3142",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "XOR (hex)",
+    "parameters": [
+      {
+        "name": "key",
+        "label": "Key",
+        "default": "key",
+        "tip": ""
+      }
+    ]
+  },
+  {
+    "name": "Pig Latin",
+    "parameters": []
+  },
+  {
+    "name": "Semaphore",
+    "parameters": []
+  }
+]
